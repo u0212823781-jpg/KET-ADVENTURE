@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KET Trainer — Test 1</title>
+<link rel="stylesheet" href="../ESTILOS/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span id="test-title">Test 1</span>
+      <small id="test-subtitle">Key English Test</small>
+    </div>
+    <a class="switch-test" id="switch-link" href="test2.html">Go to Test 2 →</a>
+  </div>
+</div>
+
+<div class="shell">
+  <nav class="rail">
+    <div class="rail-group">
+      <div class="rail-label">READING & WRITING</div>
+      <div id="rail-rw"></div>
+    </div>
+    <div class="rail-group">
+      <div class="rail-label">LISTENING</div>
+      <div id="rail-listening"></div>
+    </div>
+  </nav>
+
+  <main>
+    <p class="intro" id="intro-text"></p>
+    <div id="parts"></div>
+  </main>
+</div>
+
+<footer>KET Trainer · Alina Iuga</footer>
+
+<script src="../SCRIPTS/data-test1.js"></script>
+<script src="../SCRIPTS/app.js"></script>
+<script>renderTest(TEST1);</script>
+</body>
+</html>
