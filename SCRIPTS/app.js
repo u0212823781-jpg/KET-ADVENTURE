@@ -1,6 +1,8 @@
 /* ============================================================
-   KET Trainer — generic renderer + checker
+   KET Adventure — generic renderer + checker
    Consumes a `TEST` object (defined in data-test1.js / data-test2.js)
+   Every item can be checked on its own (small "Check" button) OR
+   all together with the part's "Check my answers" button.
    ============================================================ */
 
 function el(tag, cls, html) {
@@ -22,7 +24,7 @@ function renderNotice(lines) {
   return box;
 }
 
-function renderOptions(options, correctLetter, onPick) {
+function renderOptions(options, correctLetter) {
   const wrap = el('div', 'options');
   Object.keys(options).forEach(letter => {
     const btn = el('button', 'opt');
@@ -32,7 +34,6 @@ function renderOptions(options, correctLetter, onPick) {
     btn.addEventListener('click', () => {
       wrap.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
       btn.classList.add('selected');
-      if (onPick) onPick(letter);
     });
     wrap.appendChild(btn);
   });
@@ -51,6 +52,66 @@ function renderEvidence(item) {
   return ev;
 }
 
+/* ---------- Per-item "Check" button (small, individual) ---------- */
+
+function addItemCheckButton(item, onCheck) {
+  const btn = el('button', 'item-check', 'Check ✔');
+  btn.type = 'button';
+  btn.addEventListener('click', () => {
+    onCheck();
+    btn.remove();
+    updatePartScore(item.closest('.part'));
+  });
+  item.appendChild(btn);
+  return btn;
+}
+
+/* ---------- Grading a single item (shared by per-item + "check all") ---------- */
+
+function gradeMcItem(item) {
+  const opts = item.querySelector('.options');
+  if (!opts) return;
+  const correctLetter = opts.dataset.correct;
+  const selected = opts.querySelector('.opt.selected');
+  opts.querySelectorAll('.opt').forEach(o => {
+    o.disabled = true;
+    o.classList.remove('correct', 'incorrect');
+    if (o.dataset.letter === correctLetter) o.classList.add('correct');
+    else if (o === selected) o.classList.add('incorrect');
+  });
+  const ok = !!selected && selected.dataset.letter === correctLetter;
+  item.dataset.graded = '1';
+  item.dataset.correct = ok ? '1' : '0';
+  const ev = item.querySelector('.evidence');
+  if (ev) ev.classList.add('show');
+}
+
+function gradeGapItem(item, input) {
+  if (!input || !input.dataset.accepted) return;
+  const accepted = JSON.parse(input.dataset.accepted).map(a => a.toLowerCase().trim());
+  const val = input.value.toLowerCase().trim();
+  const ok = accepted.includes(val) && val !== '';
+  input.classList.toggle('correct', ok);
+  input.classList.toggle('incorrect', !ok);
+  item.dataset.graded = '1';
+  item.dataset.correct = ok ? '1' : '0';
+  const ev = item.querySelector('.evidence');
+  if (ev) ev.classList.add('show');
+  const globalEv = item.closest('.part-body')?.querySelector(':scope > .evidence');
+  if (globalEv) globalEv.classList.add('show');
+}
+
+function gradeSelectItem(item, select) {
+  if (!select) return;
+  const ok = select.value !== '' && select.value === select.dataset.correct;
+  select.classList.toggle('correct', ok);
+  select.classList.toggle('incorrect', select.value !== '' && !ok);
+  item.dataset.graded = '1';
+  item.dataset.correct = ok ? '1' : '0';
+  const globalEv = item.closest('.part-body')?.querySelector(':scope > .evidence');
+  if (globalEv) globalEv.classList.add('show');
+}
+
 /* ---------- Part type renderers ---------- */
 
 function buildMcNotice(part) {
@@ -66,6 +127,7 @@ function buildMcNotice(part) {
       wrap.appendChild(el('p', 'q-text', item.question));
     }
     wrap.appendChild(renderOptions(item.options, item.correct));
+    addItemCheckButton(wrap, () => gradeMcItem(wrap));
     wrap.appendChild(renderEvidence(item));
     body.appendChild(wrap);
   });
@@ -89,6 +151,7 @@ function buildMatch3(part) {
     const optionsObj = {};
     part.persons.forEach((name, i) => { optionsObj[String.fromCharCode(65 + i)] = name; });
     wrap.appendChild(renderOptions(optionsObj, item.correct));
+    addItemCheckButton(wrap, () => gradeMcItem(wrap));
     wrap.appendChild(renderEvidence(item));
     body.appendChild(wrap);
   });
@@ -108,6 +171,7 @@ function buildMcText(part) {
     wrap.dataset.kind = 'mc';
     wrap.appendChild(el('p', 'q-text', `<span class="q-num">${item.num}</span>${item.question}`));
     wrap.appendChild(renderOptions(item.options, item.correct));
+    addItemCheckButton(wrap, () => gradeMcItem(wrap));
     wrap.appendChild(renderEvidence(item));
     body.appendChild(wrap);
   });
@@ -126,6 +190,7 @@ function buildClozeMc(part) {
     wrap.dataset.kind = 'mc';
     wrap.appendChild(el('p', 'q-text', `<span class="q-num">${item.num}</span>`));
     wrap.appendChild(renderOptions(item.options, item.correct));
+    addItemCheckButton(wrap, () => gradeMcItem(wrap));
     wrap.appendChild(renderEvidence(item));
     body.appendChild(wrap);
   });
@@ -152,6 +217,7 @@ function buildClozeOpen(part) {
     input.dataset.accepted = JSON.stringify(item.accepted);
     row.appendChild(input);
     wrap.appendChild(row);
+    addItemCheckButton(wrap, () => gradeGapItem(wrap, input));
     wrap.appendChild(renderEvidence(item));
     body.appendChild(wrap);
   });
@@ -197,6 +263,7 @@ function buildListeningMc(part) {
     wrap.dataset.kind = 'mc';
     wrap.appendChild(el('p', 'q-text', `<span class="q-num">${item.num}</span>${item.question}`));
     wrap.appendChild(renderOptions(item.options, item.correct));
+    addItemCheckButton(wrap, () => gradeMcItem(wrap));
     wrap.appendChild(renderEvidence(item));
     body.appendChild(wrap);
   });
@@ -225,6 +292,7 @@ function buildListeningGap(part) {
       if (row.suffix) span.appendChild(document.createTextNode(' ' + row.suffix));
       line.appendChild(span);
       line.dataset.kind = 'gap';
+      addItemCheckButton(line, () => gradeGapItem(line, input));
     }
     box.appendChild(line);
   });
@@ -257,6 +325,7 @@ function buildListeningMatch(part) {
     });
     row.appendChild(select);
     wrap.appendChild(row);
+    addItemCheckButton(wrap, () => gradeSelectItem(wrap, select));
     body.appendChild(wrap);
   });
   const legend = el('p', null, Object.entries(part.options).map(([l, t]) => `${l} ${t}`).join(' &nbsp;&nbsp; '));
@@ -280,60 +349,49 @@ const BUILDERS = {
   'listening-match': buildListeningMatch,
 };
 
-/* ---------- Checking ---------- */
+/* ---------- Scoring ---------- */
 
-function checkPart(partEl, part) {
-  let total = 0, correct = 0;
-
-  partEl.querySelectorAll('.item[data-kind="mc"]').forEach(item => {
-    const opts = item.querySelector('.options');
-    if (!opts) return;
-    total++;
-    const correctLetter = opts.dataset.correct;
-    const selected = opts.querySelector('.opt.selected');
-    opts.querySelectorAll('.opt').forEach(o => {
-      o.disabled = true;
-      o.classList.remove('correct', 'incorrect');
-      if (o.dataset.letter === correctLetter) o.classList.add('correct');
-      else if (o === selected) o.classList.add('incorrect');
-    });
-    if (selected && selected.dataset.letter === correctLetter) correct++;
-    const ev = item.querySelector('.evidence');
-    if (ev) ev.classList.add('show');
+function updatePartScore(partEl) {
+  if (!partEl) return;
+  const items = partEl.querySelectorAll('.item[data-kind]');
+  const total = items.length;
+  let gradedCount = 0, correct = 0;
+  items.forEach(it => {
+    if (it.dataset.graded === '1') {
+      gradedCount++;
+      if (it.dataset.correct === '1') correct++;
+    }
   });
-
-  partEl.querySelectorAll('.item[data-kind="gap"] input, .item[data-kind="gap"]').forEach(() => {});
-  partEl.querySelectorAll('input.gap-input').forEach(input => {
-    if (!input.dataset.accepted) return;
-    total++;
-    const accepted = JSON.parse(input.dataset.accepted).map(a => a.toLowerCase().trim());
-    const val = input.value.toLowerCase().trim();
-    const ok = accepted.includes(val) && val !== '';
-    input.classList.toggle('correct', ok);
-    input.classList.toggle('incorrect', !ok);
-    if (ok) correct++;
-    const evWrap = input.closest('.notice') ? partEl.querySelector('.evidence') : input.closest('.item')?.querySelector('.evidence');
-    if (evWrap) evWrap.classList.add('show');
-  });
-
-  partEl.querySelectorAll('.item[data-kind="select"] select').forEach(select => {
-    total++;
-    const ok = select.value === select.dataset.correct;
-    select.classList.toggle('correct', ok);
-    select.classList.toggle('incorrect', select.value !== '' && !ok);
-    if (ok) correct++;
-  });
-  const globalEv = partEl.querySelector('.part-body > .evidence');
-  if (globalEv) globalEv.classList.add('show');
-
   const scoreEl = partEl.querySelector('.score');
   if (scoreEl) {
-    const perfect = total > 0 && correct === total;
-    scoreEl.textContent = `${correct} / ${total} correct${perfect ? ' 🎉' : ''}`;
-    scoreEl.classList.toggle('good', perfect);
+    if (gradedCount === 0) {
+      scoreEl.textContent = '';
+      scoreEl.classList.remove('good');
+    } else {
+      const perfect = gradedCount === total && correct === total;
+      scoreEl.textContent = `${correct} / ${total} correct${perfect ? ' 🎉' : ''}`;
+      scoreEl.classList.toggle('good', perfect);
+    }
   }
-  const railLink = document.querySelector(`.rail a[href="#${part.id}"]`);
-  if (railLink && total > 0) railLink.classList.add('done');
+  const railLink = document.querySelector(`.rail a[href="#${partEl.id}"]`);
+  if (railLink) railLink.classList.toggle('done', total > 0 && gradedCount === total);
+}
+
+/* "Check my answers" — grades every item in the part at once (including
+   ones the student never pressed the small individual Check button for). */
+function checkPart(partEl) {
+  partEl.querySelectorAll('.item[data-kind="mc"]').forEach(item => gradeMcItem(item));
+  partEl.querySelectorAll('.item[data-kind="gap"]').forEach(item => {
+    const input = item.querySelector('input.gap-input');
+    gradeGapItem(item, input);
+  });
+  partEl.querySelectorAll('.item[data-kind="select"]').forEach(item => {
+    const select = item.querySelector('select.gap-input');
+    gradeSelectItem(item, select);
+  });
+  // Once graded, the small per-item Check buttons are no longer needed.
+  partEl.querySelectorAll('.item-check').forEach(btn => btn.remove());
+  updatePartScore(partEl);
 }
 
 /* ---------- Page bootstrap ---------- */
@@ -365,7 +423,7 @@ function buildPart(part) {
     const actions = el('div', 'part-actions');
     const checkBtn = el('button', 'btn', '✅ Check my answers');
     checkBtn.type = 'button';
-    checkBtn.addEventListener('click', () => checkPart(section, part));
+    checkBtn.addEventListener('click', () => checkPart(section));
     actions.appendChild(checkBtn);
     actions.appendChild(el('span', 'score', ''));
     body.appendChild(actions);
