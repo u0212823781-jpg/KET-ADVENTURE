@@ -462,6 +462,15 @@ main{padding:28px 24px 80px;}
 .score.good{color:var(--mint);}
 
 /* ---------- Writing tasks ---------- */
+.story-image{
+  display:block;
+  width:100%;
+  max-width:100%;
+  height:auto;
+  border-radius:16px;
+  border:2px solid #E1D4FF;
+  margin-bottom:14px;
+}
 .writing-lines{
   border-bottom:2px dotted #D9CCF0;
   height:28px;

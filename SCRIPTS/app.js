@@ -240,6 +240,13 @@ function buildWriting(part) {
     part.pictures.forEach(p => box.appendChild(el('p', null, p)));
     body.appendChild(box);
   }
+  if (part.image) {
+    const img = document.createElement('img');
+    img.src = part.image;
+    img.alt = part.imageAlt || 'Story pictures';
+    img.className = 'story-image';
+    body.appendChild(img);
+  }
   body.appendChild(el('p', 'q-text', part.wordCount));
   for (let i = 0; i < (part.lines || 6); i++) body.appendChild(el('div', 'writing-lines'));
 

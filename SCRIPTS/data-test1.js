@@ -202,11 +202,8 @@ Alex`,
       instructions: 'Look at the three pictures. Write the story shown in the pictures.',
       tip: 'Tell the story using the past tense and link the events with time words (first, then, after that, finally). Keep sentences simple and clear rather than complex.',
       type: 'writing-story',
-      pictures: [
-        '[Picture 1: two friends playing football in a park — the wind blows the ball away]',
-        '[Picture 2: the friends walk to a big tree and look up]',
-        '[Picture 3: one friend climbs the tree to get the ball while the other waits below]'
-      ],
+      image: '../IMAGENES/test1-part7-story.png',
+      imageAlt: 'Three pictures: two friends playing football when the wind blows the ball into a tree; they look up at the tree; one friend climbs up to get the ball while the other reaches up from below.',
       wordCount: 'Write 35 words or more.',
       lines: 8,
       model: `Last Saturday, Ben and Tom were playing football in the park. Suddenly, a strong wind blew the ball away, high into a big tree. The two friends ran over and looked up in surprise. Ben decided to climb the tree to get the ball while Tom waited below. After a few minutes, Ben reached the ball and threw it down, and they both laughed and carried on with their game.`,
