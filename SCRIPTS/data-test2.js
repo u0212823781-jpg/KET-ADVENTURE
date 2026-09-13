@@ -208,11 +208,8 @@ Alex`,
       instructions: 'Look at the three pictures. Write the story shown in the pictures.',
       tip: 'Tell the story using the past tense and link the events with time words (first, then, after that, finally). Keep sentences simple and clear rather than complex.',
       type: 'writing-story',
-      pictures: [
-        '[Picture 1: a group of cyclists lined up at the start of a race]',
-        '[Picture 2: the cyclists riding together on the road during the race]',
-        '[Picture 3: one cyclist crosses the finish line as people cheer and take a photo]'
-      ],
+      image: '../IMAGENES/test2-part7-story.png',
+      imageAlt: 'Three pictures: a group of cyclists lined up at the start of a race; the cyclists riding together on the road during the race; one cyclist crosses the finish line as people cheer and take a photo.',
       wordCount: 'Write 35 words or more.',
       lines: 8,
       model: `Last month, Mia took part in a cycling race with her friends. At the start, all the cyclists lined up together, waiting for the race to begin. During the race, Mia stayed close behind the leaders the whole way. Finally, she rode faster than everyone else and crossed the finish line first. Her friends cheered loudly and took a photo to remember the moment.`,
