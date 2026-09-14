@@ -11,6 +11,7 @@ const PRETEST1 = {
       label: 'Vocabulary Challenge — Parts 1 & 2',
       description: 'Key words you will meet in Parts 1 and 2 of the test.',
       poster: '../IMAGENES/pretest1-vocab1-poster.jpg',
+      playHref: 'play-vocab1.html',
       crossLinks: [
         { label: 'Practise Test 1 — Part 1', href: 'test1.html#r1' },
         { label: 'Practise Test 1 — Part 2', href: 'test1.html#r2' },
@@ -142,6 +143,7 @@ const PRETEST1 = {
       label: 'Vocabulary Challenge — Parts 3, 4 & 5',
       description: 'Key words you will meet in Parts 3, 4 and 5 of the test.',
       poster: '../IMAGENES/pretest1-vocab2-poster.jpg',
+      playHref: 'play-vocab2.html',
       crossLinks: [
         { label: 'Practise Test 1 — Part 3', href: 'test1.html#r3' },
         { label: 'Practise Test 1 — Part 4', href: 'test1.html#r4' },

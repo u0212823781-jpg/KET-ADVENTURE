@@ -331,17 +331,26 @@ function renderTrainer(data) {
     if (sec.description) head.appendChild(el('p', null, sec.description));
     main.appendChild(head);
 
-    if (sec.poster) {
-      const details = document.createElement('details');
-      details.className = 'poster-toggle';
-      const summary = document.createElement('summary');
-      summary.textContent = 'See the vocabulary poster';
-      details.appendChild(summary);
-      const img = document.createElement('img');
-      img.src = sec.poster;
-      img.alt = sec.label + ' poster';
-      details.appendChild(img);
-      main.appendChild(details);
+    if (sec.poster || sec.playHref) {
+      const row = el('div', 'poster-row');
+      if (sec.poster) {
+        const details = document.createElement('details');
+        details.className = 'poster-toggle';
+        const summary = document.createElement('summary');
+        summary.textContent = 'See the vocabulary poster';
+        details.appendChild(summary);
+        const img = document.createElement('img');
+        img.src = sec.poster;
+        img.alt = sec.label + ' poster';
+        details.appendChild(img);
+        row.appendChild(details);
+      }
+      if (sec.playHref) {
+        const play = el('a', 'play-btn', '▶ Play the presentation');
+        play.href = sec.playHref;
+        row.appendChild(play);
+      }
+      main.appendChild(row);
     }
 
     sec.exercises.forEach(part => main.appendChild(buildPart(part)));

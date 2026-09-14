@@ -71,6 +71,11 @@ a{color:var(--purple);}
 .section-head h2{font-size:1.3rem;margin:0 0 4px;color:var(--ink);}
 .section-head p{margin:0;color:var(--ink-soft);font-weight:600;font-size:0.92rem;}
 
+.poster-row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start;margin:12px 0 20px;}
+.poster-row .poster-toggle{margin:0;flex:1 1 260px;}
+.play-btn{background:var(--pink);color:#fff;text-decoration:none;font-family:'Baloo 2',cursive;font-weight:700;font-size:0.95rem;padding:13px 20px;border-radius:14px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:.15s;}
+.play-btn:hover{background:#ff6f9c;}
+
 .poster-toggle{background:var(--mint-soft);border:1px solid #bdefe4;border-radius:14px;padding:10px 14px;margin:12px 0 20px;}
 .poster-toggle summary{cursor:pointer;font-weight:800;color:#128a72;list-style:none;}
 .poster-toggle summary::-webkit-details-marker{display:none;}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulary Challenge — Parts 3, 4 & 5 — Slides</title>
+<link rel="stylesheet" href="../ESTILOS/style-slideshow.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span id="deck-title">Loading...</span>
+  <a href="pretest1.html#vocab2">← Back to Trainer Pre-Test 1</a>
+</div>
+
+<div class="stage" id="stage">
+  <div class="slide-wrap">
+    <img id="slide-img" alt="Slide">
+  </div>
+</div>
+
+<div class="controls">
+  <button class="nav-btn" id="prev-btn">⬅ Prev</button>
+  <span id="slide-counter">1 / 30</span>
+  <button class="nav-btn" id="next-btn">Next ➡</button>
+  <button class="icon-btn" id="fs-btn">⛶ Fullscreen</button>
+</div>
+<p class="hint">Use the arrow keys or swipe to move between slides · press F for fullscreen</p>
+
+<script src="../SCRIPTS/slideshow.js"></script>
+<script>
+  initSlideshow({
+    folder: '../IMAGENES/ppt-vocab2',
+    prefix: 'slide-',
+    pad: 2,
+    count: 30,
+    title: 'Vocabulary Challenge — Parts 3, 4 & 5',
+  });
+</script>
+</body>
+</html>
