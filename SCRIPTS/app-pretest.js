@@ -291,7 +291,12 @@ function buildPart(part) {
     const actions = el('div', 'part-actions');
     const checkBtn = el('button', 'btn', '✅ Check my answers');
     checkBtn.type = 'button';
-    checkBtn.addEventListener('click', () => checkPart(section));
+    checkBtn.addEventListener('click', () => {
+      checkPart(section);
+      checkBtn.disabled = true;
+      checkBtn.textContent = '✔️ Checked';
+      section.querySelectorAll('select, input.gap-input').forEach(f => { f.disabled = true; });
+    });
     actions.appendChild(checkBtn);
     actions.appendChild(el('span', 'score', ''));
     body.appendChild(actions);

@@ -140,6 +140,10 @@ input.gap-input.incorrect{border-color:var(--bad);background:#fff0f0;}
 .btn.ghost:hover{background:var(--purple-soft);}
 .btn.mint{background:var(--mint);}
 .btn.mint:hover{background:#33c3ab;}
+.btn:disabled{opacity:0.55;cursor:default;}
+.btn:disabled:hover{background:var(--purple);}
+
+input.gap-input:disabled,select:disabled{opacity:0.9;cursor:default;}
 
 .part-actions{display:flex;align-items:center;gap:14px;margin-top:16px;flex-wrap:wrap;}
 .score{font-weight:800;color:var(--ink-soft);}
