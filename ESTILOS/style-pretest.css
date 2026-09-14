@@ -146,6 +146,7 @@ input.gap-input.incorrect{border-color:var(--bad);background:var(--bad-soft);}
 .wm-item:first-child{border-top:none;margin-top:0;padding-top:0;}
 .wm-stem{font-weight:700;margin-bottom:6px;white-space:pre-line;}
 .wm-item input.gap-input{width:100%;}
+.wm-btn-row{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;}
 
 .btn{background:var(--pink);color:#fff;border:none;border-radius:999px;padding:11px 22px;font-family:'Baloo 2',cursive;font-weight:700;font-size:0.95rem;cursor:pointer;box-shadow:0 3px 0 #D94F82;transition:transform .1s ease;}
 .btn:hover{transform:translateY(-2px);}

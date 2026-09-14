@@ -430,8 +430,27 @@ function buildPart(part) {
     const actions = el('div', 'part-actions');
     const checkBtn = el('button', 'btn', '✅ Check my answers');
     checkBtn.type = 'button';
-    checkBtn.addEventListener('click', () => checkPart(section));
+    const resetBtn = el('button', 'btn ghost reset-btn', '🔄 Try again');
+    resetBtn.type = 'button';
+    resetBtn.style.display = 'none';
+
+    checkBtn.addEventListener('click', () => {
+      checkPart(section);
+      checkBtn.disabled = true;
+      checkBtn.textContent = '✔️ Checked';
+      section.querySelectorAll('input.gap-input, select.gap-input, .opt').forEach(f => { f.disabled = true; });
+      resetBtn.style.display = 'inline-block';
+    });
+
+    resetBtn.addEventListener('click', () => {
+      const fresh = buildPart(part);
+      section.replaceWith(fresh);
+      const railLink = document.querySelector(`.rail a[href="#${part.id}"]`);
+      if (railLink) railLink.classList.remove('done');
+    });
+
     actions.appendChild(checkBtn);
+    actions.appendChild(resetBtn);
     actions.appendChild(el('span', 'score', ''));
     body.appendChild(actions);
   }

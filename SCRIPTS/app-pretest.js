@@ -131,11 +131,21 @@ function buildWriting(part) {
   const toggle = el('button', 'btn ghost', 'Show model answer');
   toggle.type = 'button';
   meta.appendChild(toggle);
+  const resetBtn = el('button', 'btn ghost', '🔄 Try again');
+  resetBtn.type = 'button';
+  meta.appendChild(resetBtn);
   wrap.appendChild(meta);
   const model = el('div', 'model-answer', part.model);
   toggle.addEventListener('click', () => {
     model.classList.toggle('show');
     toggle.textContent = model.classList.contains('show') ? 'Hide model answer' : 'Show model answer';
+  });
+  resetBtn.addEventListener('click', () => {
+    ta.value = '';
+    count.textContent = '0 words' + (part.minWords ? ` (min. ${part.minWords})` : '');
+    model.classList.remove('show');
+    toggle.textContent = 'Show model answer';
+    ta.focus();
   });
   wrap.appendChild(model);
   return wrap;
@@ -151,14 +161,24 @@ function buildWritingMulti(part) {
     input.className = 'gap-input';
     input.placeholder = 'Write your answer...';
     box.appendChild(input);
+    const btnRow = el('div', 'wm-btn-row');
     const toggle = el('button', 'btn ghost', 'Show a model answer');
     toggle.type = 'button';
-    toggle.style.marginTop = '8px';
-    box.appendChild(toggle);
+    btnRow.appendChild(toggle);
+    const resetBtn = el('button', 'btn ghost', '🔄 Try again');
+    resetBtn.type = 'button';
+    btnRow.appendChild(resetBtn);
+    box.appendChild(btnRow);
     const model = el('div', 'model-answer', item.model);
     toggle.addEventListener('click', () => {
       model.classList.toggle('show');
       toggle.textContent = model.classList.contains('show') ? 'Hide model answer' : 'Show a model answer';
+    });
+    resetBtn.addEventListener('click', () => {
+      input.value = '';
+      model.classList.remove('show');
+      toggle.textContent = 'Show a model answer';
+      input.focus();
     });
     box.appendChild(model);
     wrap.appendChild(box);
