@@ -97,6 +97,7 @@ a{color:var(--purple-dark);}
   color:#FFE3F1;
   letter-spacing:.02em;
 }
+.topbar-nav{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
 .switch-test{
   font-family:var(--display);
   font-weight:600;

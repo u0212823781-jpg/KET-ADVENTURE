@@ -471,8 +471,27 @@ function renderTest(test) {
   document.title = test.pageTitle;
   document.getElementById('test-title').textContent = test.title;
   document.getElementById('test-subtitle').textContent = test.subtitle;
-  document.getElementById('switch-link').href = test.switchHref;
-  document.getElementById('switch-link').textContent = test.switchLabel;
+
+  const switchLink = document.getElementById('switch-link');
+  switchLink.href = test.switchHref;
+  switchLink.textContent = test.switchLabel;
+
+  // Wrap the existing switch-test link together with Home and Trainer Pre-Test 1
+  // links, so people can navigate back without using the browser's back button.
+  const nav = document.createElement('div');
+  nav.className = 'topbar-nav';
+  switchLink.parentNode.insertBefore(nav, switchLink);
+
+  const homeLink = el('a', 'switch-test', '🏠 Home');
+  homeLink.href = '../index.html';
+  nav.appendChild(homeLink);
+
+  const trainerLink = el('a', 'switch-test', '📚 Trainer Pre-Test 1');
+  trainerLink.href = 'pretest1.html';
+  nav.appendChild(trainerLink);
+
+  nav.appendChild(switchLink);
+
   document.getElementById('intro-text').textContent = test.intro;
 
   const railRW = document.getElementById('rail-rw');
