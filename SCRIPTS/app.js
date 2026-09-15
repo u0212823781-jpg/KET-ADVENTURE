@@ -54,16 +54,52 @@ function renderEvidence(item) {
 
 /* ---------- Per-item "Check" button (small, individual) ---------- */
 
+function resetItemState(item) {
+  const opts = item.querySelector('.options');
+  if (opts) {
+    opts.querySelectorAll('.opt').forEach(o => {
+      o.disabled = false;
+      o.classList.remove('selected', 'correct', 'incorrect');
+    });
+  }
+  const gapInput = item.querySelector('input.gap-input');
+  if (gapInput) {
+    gapInput.value = '';
+    gapInput.classList.remove('correct', 'incorrect');
+  }
+  const select = item.querySelector('select.gap-input');
+  if (select) {
+    select.value = '';
+    select.classList.remove('correct', 'incorrect');
+  }
+  const ev = item.querySelector('.evidence');
+  if (ev) ev.classList.remove('show');
+  delete item.dataset.graded;
+  delete item.dataset.correct;
+}
+
 function addItemCheckButton(item, onCheck) {
-  const btn = el('button', 'item-check', 'Check ✔');
-  btn.type = 'button';
-  btn.addEventListener('click', () => {
-    onCheck();
-    btn.remove();
-    updatePartScore(item.closest('.part'));
-  });
-  item.appendChild(btn);
-  return btn;
+  function renderCheckBtn() {
+    const btn = el('button', 'item-check', 'Check ✔');
+    btn.type = 'button';
+    btn.addEventListener('click', () => {
+      onCheck();
+      btn.replaceWith(renderResetBtn());
+      updatePartScore(item.closest('.part'));
+    });
+    return btn;
+  }
+  function renderResetBtn() {
+    const btn = el('button', 'item-check item-reset', '🔄 Try again');
+    btn.type = 'button';
+    btn.addEventListener('click', () => {
+      resetItemState(item);
+      btn.replaceWith(renderCheckBtn());
+      updatePartScore(item.closest('.part'));
+    });
+    return btn;
+  }
+  item.appendChild(renderCheckBtn());
 }
 
 /* ---------- Grading a single item (shared by per-item + "check all") ---------- */
