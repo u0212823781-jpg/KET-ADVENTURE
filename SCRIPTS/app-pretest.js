@@ -9,11 +9,62 @@ function norm(s) {
   return (s || '').toLowerCase().trim().replace(/\s+/g, ' ').replace(/[.!?]$/, '');
 }
 
+/* ---------- per-item Check ✔ / 🔄 Try again toggle button ---------- */
+function addItemCheckButton(container, onCheck, onReset, opts) {
+  opts = opts || {};
+  const tiny = !!opts.tiny;
+  function renderCheckBtn() {
+    const btn = el('button', tiny ? 'item-check tiny' : 'item-check', tiny ? '✔' : 'Check ✔');
+    btn.type = 'button';
+    btn.addEventListener('click', () => {
+      onCheck();
+      btn.replaceWith(renderResetBtn());
+    });
+    return btn;
+  }
+  function renderResetBtn() {
+    const btn = el('button', tiny ? 'item-check item-reset tiny' : 'item-check item-reset', tiny ? '↺' : '🔄 Try again');
+    btn.type = 'button';
+    btn.addEventListener('click', () => {
+      onReset();
+      btn.replaceWith(renderCheckBtn());
+    });
+    return btn;
+  }
+  container.appendChild(renderCheckBtn());
+}
+
+function updatePartScore(partEl) {
+  if (!partEl) return;
+  const items = partEl.querySelectorAll('.match-row[data-kind], .mc-item[data-kind], .gap-item[data-kind], .cloze-text input.gap-input');
+  const total = items.length;
+  let gradedCount = 0, correct = 0;
+  items.forEach(it => {
+    if (it.dataset.graded === '1') {
+      gradedCount++;
+      if (it.dataset.correct === '1') correct++;
+    }
+  });
+  const scoreEl = partEl.querySelector('.score');
+  if (scoreEl) {
+    if (gradedCount === 0) {
+      scoreEl.textContent = '';
+      scoreEl.classList.remove('good');
+    } else {
+      const perfect = gradedCount === total && correct === total;
+      scoreEl.textContent = `${correct} / ${total} correct${perfect ? ' 🎉' : ''}`;
+      scoreEl.classList.toggle('good', perfect);
+    }
+  }
+  const railLink = document.querySelector(`.rail a[href="#${partEl.id}"]`);
+  if (railLink) railLink.classList.toggle('done', total > 0 && gradedCount === total);
+}
+
 /* ---------- builders ---------- */
 
 function buildMatch(part) {
   const wrap = el('div', 'match-list');
-  part.pairs.forEach((pair, i) => {
+  part.pairs.forEach((pair) => {
     const row = el('div', 'match-row');
     row.dataset.kind = 'match';
     row.appendChild(el('span', 'left', pair.left));
@@ -30,6 +81,25 @@ function buildMatch(part) {
       select.appendChild(o);
     });
     row.appendChild(select);
+    addItemCheckButton(row,
+      () => {
+        const ok = select.value !== '' && select.value === select.dataset.correct;
+        select.classList.toggle('correct', ok);
+        select.classList.toggle('incorrect', select.value !== '' && !ok);
+        select.disabled = true;
+        row.dataset.graded = '1';
+        row.dataset.correct = ok ? '1' : '0';
+        updatePartScore(row.closest('.part'));
+      },
+      () => {
+        select.value = '';
+        select.disabled = false;
+        select.classList.remove('correct', 'incorrect');
+        delete row.dataset.graded;
+        delete row.dataset.correct;
+        updatePartScore(row.closest('.part'));
+      }
+    );
     wrap.appendChild(row);
   });
   return wrap;
@@ -37,7 +107,7 @@ function buildMatch(part) {
 
 function buildMc3(part) {
   const wrap = el('div');
-  part.items.forEach((item, i) => {
+  part.items.forEach((item) => {
     const box = el('div', 'mc-item');
     box.dataset.kind = 'mc';
     box.appendChild(el('div', 'mc-stem', item.stem));
@@ -55,6 +125,31 @@ function buildMc3(part) {
       opts.appendChild(btn);
     });
     box.appendChild(opts);
+    addItemCheckButton(box,
+      () => {
+        const correctLetter = opts.dataset.correct;
+        const selected = opts.querySelector('.opt.selected');
+        opts.querySelectorAll('.opt').forEach(b => {
+          b.disabled = true;
+          b.classList.remove('correct', 'incorrect');
+          if (b.dataset.letter === correctLetter) b.classList.add('correct');
+          else if (b === selected) b.classList.add('incorrect');
+        });
+        const ok = !!selected && selected.dataset.letter === correctLetter;
+        box.dataset.graded = '1';
+        box.dataset.correct = ok ? '1' : '0';
+        updatePartScore(box.closest('.part'));
+      },
+      () => {
+        opts.querySelectorAll('.opt').forEach(b => {
+          b.disabled = false;
+          b.classList.remove('selected', 'correct', 'incorrect');
+        });
+        delete box.dataset.graded;
+        delete box.dataset.correct;
+        updatePartScore(box.closest('.part'));
+      }
+    );
     wrap.appendChild(box);
   });
   return wrap;
@@ -77,6 +172,28 @@ function buildGap(part) {
     row.appendChild(input);
     const ans = el('span', 'gap-answer', '(' + item.accepted[0] + ')');
     row.appendChild(ans);
+    addItemCheckButton(row,
+      () => {
+        const accepted = JSON.parse(input.dataset.accepted).map(norm);
+        const ok = accepted.includes(norm(input.value)) && input.value.trim() !== '';
+        input.classList.toggle('correct', ok);
+        input.classList.toggle('incorrect', !ok);
+        input.disabled = true;
+        ans.classList.add('show');
+        row.dataset.graded = '1';
+        row.dataset.correct = ok ? '1' : '0';
+        updatePartScore(row.closest('.part'));
+      },
+      () => {
+        input.value = '';
+        input.disabled = false;
+        input.classList.remove('correct', 'incorrect');
+        ans.classList.remove('show');
+        delete row.dataset.graded;
+        delete row.dataset.correct;
+        updatePartScore(row.closest('.part'));
+      }
+    );
     wrap.appendChild(row);
   });
   return wrap;
@@ -109,6 +226,31 @@ function buildCloze(part) {
       input.className = 'gap-input';
       input.dataset.accepted = JSON.stringify(chunk.accepted);
       p.appendChild(input);
+      const holder = el('span', 'inline-check-holder');
+      p.appendChild(holder);
+      addItemCheckButton(holder,
+        () => {
+          const accepted = JSON.parse(input.dataset.accepted).map(norm);
+          const ok = accepted.includes(norm(input.value)) && input.value.trim() !== '';
+          input.classList.toggle('correct', ok);
+          input.classList.toggle('incorrect', !ok);
+          input.disabled = true;
+          input.title = 'Answer: ' + JSON.parse(input.dataset.accepted)[0];
+          input.dataset.graded = '1';
+          input.dataset.correct = ok ? '1' : '0';
+          updatePartScore(p.closest('.part'));
+        },
+        () => {
+          input.value = '';
+          input.disabled = false;
+          input.classList.remove('correct', 'incorrect');
+          input.removeAttribute('title');
+          delete input.dataset.graded;
+          delete input.dataset.correct;
+          updatePartScore(p.closest('.part'));
+        },
+        { tiny: true }
+      );
     }
   });
   wrap.appendChild(p);
@@ -225,20 +367,18 @@ const NOT_GRADABLE = ['writing', 'writing-multi', 'reference'];
 /* ---------- grading ---------- */
 
 function checkPart(sectionEl) {
-  let total = 0, correct = 0;
-
   sectionEl.querySelectorAll('.match-row').forEach(row => {
     const select = row.querySelector('select');
-    total++;
     const ok = select.value !== '' && select.value === select.dataset.correct;
     select.classList.toggle('correct', ok);
     select.classList.toggle('incorrect', select.value !== '' && !ok);
-    if (ok) correct++;
+    select.disabled = true;
+    row.dataset.graded = '1';
+    row.dataset.correct = ok ? '1' : '0';
   });
 
   sectionEl.querySelectorAll('.mc-item').forEach(box => {
     const opts = box.querySelector('.options');
-    total++;
     const correctLetter = opts.dataset.correct;
     const selected = opts.querySelector('.opt.selected');
     opts.querySelectorAll('.opt').forEach(b => {
@@ -247,39 +387,40 @@ function checkPart(sectionEl) {
       if (b.dataset.letter === correctLetter) b.classList.add('correct');
       else if (b === selected) b.classList.add('incorrect');
     });
-    if (selected && selected.dataset.letter === correctLetter) correct++;
+    const ok = !!selected && selected.dataset.letter === correctLetter;
+    box.dataset.graded = '1';
+    box.dataset.correct = ok ? '1' : '0';
   });
 
   sectionEl.querySelectorAll('.gap-item').forEach(row => {
     const input = row.querySelector('input.gap-input');
-    total++;
     const accepted = JSON.parse(input.dataset.accepted).map(norm);
     const ok = accepted.includes(norm(input.value)) && input.value.trim() !== '';
     input.classList.toggle('correct', ok);
     input.classList.toggle('incorrect', !ok);
-    if (ok) correct++;
+    input.disabled = true;
     row.querySelector('.gap-answer').classList.add('show');
+    row.dataset.graded = '1';
+    row.dataset.correct = ok ? '1' : '0';
   });
 
   sectionEl.querySelectorAll('.cloze-text').forEach(p => {
     p.querySelectorAll('input.gap-input').forEach(input => {
-      total++;
       const accepted = JSON.parse(input.dataset.accepted).map(norm);
       const ok = accepted.includes(norm(input.value)) && input.value.trim() !== '';
       input.classList.toggle('correct', ok);
       input.classList.toggle('incorrect', !ok);
-      if (ok) correct++;
+      input.disabled = true;
       input.title = 'Answer: ' + JSON.parse(input.dataset.accepted)[0];
+      input.dataset.graded = '1';
+      input.dataset.correct = ok ? '1' : '0';
     });
   });
 
-  const scoreEl = sectionEl.querySelector('.score');
-  if (scoreEl) {
-    scoreEl.textContent = `${correct} / ${total} correct`;
-    scoreEl.classList.toggle('good', total > 0 && correct === total);
-  }
-  const railLink = document.querySelector(`.rail a[href="#${sectionEl.id}"]`);
-  if (railLink && total > 0) railLink.classList.add('done');
+  // The whole block is now graded together, so the small per-item
+  // Check/Try again buttons are no longer needed.
+  sectionEl.querySelectorAll('.item-check').forEach(btn => btn.remove());
+  updatePartScore(sectionEl);
 }
 
 /* ---------- page bootstrap ---------- */
@@ -319,34 +460,14 @@ function buildPart(part) {
       checkPart(section);
       checkBtn.disabled = true;
       checkBtn.textContent = '✔️ Checked';
-      section.querySelectorAll('select, input.gap-input').forEach(f => { f.disabled = true; });
       resetBtn.style.display = 'inline-block';
     });
 
     resetBtn.addEventListener('click', () => {
-      section.querySelectorAll('select').forEach(s => {
-        s.value = '';
-        s.disabled = false;
-        s.classList.remove('correct', 'incorrect');
-      });
-      section.querySelectorAll('input.gap-input').forEach(i => {
-        i.value = '';
-        i.disabled = false;
-        i.classList.remove('correct', 'incorrect');
-        i.removeAttribute('title');
-      });
-      section.querySelectorAll('.gap-answer').forEach(a => a.classList.remove('show'));
-      section.querySelectorAll('.opt').forEach(b => {
-        b.disabled = false;
-        b.classList.remove('selected', 'correct', 'incorrect');
-      });
-      const scoreEl = section.querySelector('.score');
-      if (scoreEl) { scoreEl.textContent = ''; scoreEl.classList.remove('good'); }
-      const railLink = document.querySelector(`.rail a[href="#${section.id}"]`);
+      const fresh = buildPart(part);
+      section.replaceWith(fresh);
+      const railLink = document.querySelector(`.rail a[href="#${part.id}"]`);
       if (railLink) railLink.classList.remove('done');
-      checkBtn.disabled = false;
-      checkBtn.textContent = '✅ Check my answers';
-      resetBtn.style.display = 'none';
     });
 
     actions.appendChild(checkBtn);
