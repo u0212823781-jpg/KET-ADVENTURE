@@ -405,5 +405,384 @@ const PRETEST1 = {
         },
       ],
     },
+
+    /* ============ WRITING PART 7 TRAINER ============ */
+    {
+      id: 'writing7',
+      label: 'Writing Part 7 Trainer — Story from Pictures',
+      description: 'Language and grammar for telling a story from three pictures.',
+      crossLinks: [
+        { label: 'Practise Test 1 — Part 7', href: 'test1.html#r7' },
+        { label: 'Practise Test 2 — Part 7', href: 'test2.html#r7' },
+      ],
+      exercises: [
+        {
+          id: 'w7-ref', number: '📚', title: 'Story Language Bank', navLabel: 'Reference',
+          type: 'reference',
+          tables: [
+            {
+              title: '1. Useful Language Bank',
+              headers: ['What do you need?', 'Useful language'],
+              rows: [
+                ['Start the story', 'One day... / Last Saturday... / Yesterday...'],
+                ['Continue', 'Then... / After that... / Next...'],
+                ['Something unexpected', 'Suddenly...'],
+                ['Finish', 'Finally... / In the end...'],
+                ['Feelings', 'happy / excited / worried / surprised / tired'],
+                ['Useful phrases', 'had a great time / went home / saw... / found... / decided to...'],
+              ],
+            },
+            {
+              title: '2. Irregular Verbs (Present → Past)',
+              headers: ['Present', 'Past', 'Example'],
+              rows: [
+                ['go', 'went', 'They went to the park.'],
+                ['see', 'saw', 'She saw a dog.'],
+                ['find', 'found', 'He found the bag.'],
+                ['get', 'got', 'They got the ball.'],
+                ['have', 'had', 'We had a great time.'],
+                ['take', 'took', 'She took an umbrella.'],
+                ['come', 'came', 'Her friend came home.'],
+                ['run', 'ran', 'He ran quickly.'],
+                ['give', 'gave', 'She gave him the book.'],
+                ['eat', 'ate', 'They ate lunch.'],
+                ['buy', 'bought', 'He bought a drink.'],
+                ['make', 'made', 'They made a cake.'],
+              ],
+            },
+          ],
+          tip: 'Regular verbs: play → played • walk → walked • decide → decided • visit → visited • start → started',
+        },
+        {
+          id: 'w7-1', number: '1', title: 'Activity 1 — Present → Past', navLabel: 'Act.1 Past tense',
+          type: 'writing-multi',
+          instructions: 'Rewrite each sentence in the past. (Example: Emma goes to the park. → Emma went to the park.)',
+          items: [
+            { stem: '2. She sees a dog. →', model: 'She saw a dog.' },
+            { stem: '3. The dog runs away. →', model: 'The dog ran away.' },
+            { stem: '4. Emma finds its owner. →', model: 'Emma found its owner.' },
+            { stem: '5. They are very happy. →', model: 'They were very happy.' },
+          ],
+        },
+        {
+          id: 'w7-2', number: '2', title: 'Activity 2 — Choose the story connector', navLabel: 'Act.2 Connectors',
+          type: 'mc3',
+          instructions: 'Choose the connector that makes the story logical.',
+          items: [
+            { stem: '1. ___, Ben was walking home.', correct: 'A', showLetters: false, options: [{ letter: 'A', text: 'One day' }, { letter: 'B', text: 'Finally' }, { letter: 'C', text: 'Suddenly' }] },
+            { stem: '2. He heard a strange noise. ___, he stopped.', correct: 'A', showLetters: false, options: [{ letter: 'A', text: 'Suddenly' }, { letter: 'B', text: 'Yesterday' }, { letter: 'C', text: 'Finally' }] },
+            { stem: '3. ___, he looked behind a tree.', correct: 'A', showLetters: false, options: [{ letter: 'A', text: 'Then' }, { letter: 'B', text: 'Last Saturday' }, { letter: 'C', text: 'One day' }] },
+            { stem: '4. ___, he found a little kitten.', correct: 'A', showLetters: false, options: [{ letter: 'A', text: 'Finally' }, { letter: 'B', text: 'Suddenly' }, { letter: 'C', text: 'Next week' }] },
+          ],
+        },
+        {
+          id: 'w7-3', number: '3', title: 'Activity 3 — Put the story in order', navLabel: 'Act.3 Order',
+          type: 'match',
+          instructions: 'Choose which sentence comes 1st, 2nd, 3rd and 4th.',
+          options: [
+            { letter: 'A', text: 'Finally, they ate the sandwiches together.' },
+            { letter: 'B', text: 'Suddenly, a bird took one of the sandwiches.' },
+            { letter: 'C', text: 'Last Sunday, Amy and Jack had a picnic in the park.' },
+            { letter: 'D', text: 'Jack ran after the bird and got the sandwich back.' },
+          ],
+          pairs: [
+            { left: '1st sentence', correct: 'C' },
+            { left: '2nd sentence', correct: 'B' },
+            { left: '3rd sentence', correct: 'D' },
+            { left: '4th sentence', correct: 'A' },
+          ],
+        },
+        {
+          id: 'w7-4', number: '4', title: 'Activity 4 — Make the sentence better', navLabel: 'Act.4 Improve',
+          type: 'writing-multi',
+          instructions: 'Add a useful detail or connector from the mini bank: suddenly • with her friend • near the... • because... • very excited • after that • finally',
+          image: '../IMAGENES/trainer-extra/part7-picnic-story.jpg',
+          items: [
+            { stem: '1. The girl went to the park. →', model: 'Last Saturday, the girl went to the park with her friend.' },
+            { stem: '2. She saw a dog. →', model: 'Suddenly, she saw a dog near a tree.' },
+            { stem: '3. The dog ran away. →', model: 'After that, the dog ran away because it was scared.' },
+          ],
+        },
+        {
+          id: 'w7-5', number: '5', title: 'Activity 5 — Three-step story', navLabel: 'Act.5 Three-step',
+          type: 'writing-multi',
+          instructions: 'Complete the beginning, problem and ending of Lucy\'s story.',
+          image: '../IMAGENES/trainer-extra/part7-beach-story.jpg',
+          items: [
+            { stem: 'Beginning: Last Sunday, Lucy ___', model: 'Last Sunday, Lucy went to the beach with her family.' },
+            { stem: 'Problem: Suddenly, ___', model: 'Suddenly, the wind blew her hat away.' },
+            { stem: 'Ending: Finally, ___', model: 'Finally, her brother found it near a café.' },
+          ],
+        },
+        {
+          id: 'w7-final', number: '🏁', title: 'Final Practice — New Part 7 task', navLabel: 'Final task',
+          type: 'writing',
+          instructions: 'Look at the three pictures. Write the story shown in the pictures.',
+          tip: 'Remember: use the past tense, follow the pictures in order and connect your ideas with words such as suddenly, then and finally. Useful phrases: in the park • on the path • look around • give something back • thank someone. Write 35 words or more.',
+          image: '../IMAGENES/trainer-extra/part7-bike-story.jpg',
+          minWords: 35,
+          model: "Last Saturday, a boy was riding his bike in the park. Suddenly, he saw a small bag on the path, so he stopped and picked it up. Then he looked around and saw an elderly woman. He gave the bag back to her. She was very happy and thanked him.",
+        },
+      ],
+    },
+
+    /* ============ LISTENING TRAINER — TEST 1 · PARTS 1, 2 & 3 ============ */
+    {
+      id: 'listening123',
+      label: 'Listening Trainer — Test 1 · Parts 1, 2 & 3',
+      description: 'No audios yet! First, practise the vocabulary, strategies and tips you need for KET Listening.',
+      poster: '../IMAGENES/trainer-extra/listening123-vocab-poster.jpg',
+      crossLinks: [
+        { label: 'Practise Test 1 — Listening Part 1', href: 'test1.html#l1' },
+        { label: 'Practise Test 1 — Listening Part 2', href: 'test1.html#l2' },
+        { label: 'Practise Test 1 — Listening Part 3', href: 'test1.html#l3' },
+      ],
+      exercises: [
+        {
+          id: 'l123-1', number: '1', title: 'Activity 1 — Quick Vocabulary Challenge', navLabel: 'Ex.1 Odd one out',
+          type: 'gap',
+          instructions: 'Choose the odd one out from each group and write it in the box.',
+          items: [
+            { stem: '1. volleyball – hockey – bracelet – basketball →', accepted: ['bracelet'] },
+            { stem: '2. necklace – earrings – glasses – geography →', accepted: ['geography'] },
+            { stem: '3. library – café – shopping centre – excited →', accepted: ['excited'] },
+            { stem: '4. worried – scared – excited – ticket →', accepted: ['ticket'] },
+            { stem: '5. kite – guitar – picnic – homework →', accepted: ['homework'] },
+          ],
+        },
+        {
+          id: 'l123-2', number: '2', title: 'Activity 2 — Find the Wrong Clue!', navLabel: 'Ex.2 Wrong clue',
+          type: 'mc3',
+          instructions: 'Read each mini-dialogue and choose the final answer.',
+          tip: 'In Listening Part 1, you may hear all three options. Listen for changes and the final decision.',
+          items: [
+            { stem: '1. What will Mia take to the park?', passage: "Mia says: I packed my basketball, but Leo says the court is closed. I thought about taking my guitar, but it is too heavy. I'll take the kite — it's windy today.", correct: 'C', options: [{ letter: 'A', text: 'basketball' }, { letter: 'B', text: 'guitar' }, { letter: 'C', text: 'kite' }] },
+            { stem: "2. Where will Ben meet his cousin?", passage: "Ben says: We usually meet at the café. Today it's full, though. The library closes early, so let's meet outside the shopping centre instead.", correct: 'C', options: [{ letter: 'A', text: 'café' }, { letter: 'B', text: 'library' }, { letter: 'C', text: 'shopping centre' }] },
+            { stem: '3. What present will they buy?', passage: "Girl says: The bracelet is pretty. Boy: Yes, but it's too expensive. Girl: What about the necklace? Boy: She already has one. Let's get the earrings.", correct: 'C', options: [{ letter: 'A', text: 'bracelet' }, { letter: 'B', text: 'necklace' }, { letter: 'C', text: 'earrings' }] },
+          ],
+        },
+        {
+          id: 'l123-3', number: '3', title: 'Activity 3 — KET-style Part 1 Practice', navLabel: 'Ex.3 Part 1 practice',
+          type: 'mc3',
+          instructions: 'Read each mini-dialogue carefully and choose A, B or C. The dialogue includes distractors, just like a real listening task.',
+          items: [
+            { stem: '1. What sport is Sam going to play after school?', passage: "Girl says: Are you coming to hockey practice, Sam? Sam: I can't today. I promised Max I'd try volleyball, but his team is full. So I'm going to basketball practice with my brother instead.", correct: 'C', options: [{ letter: 'A', text: 'hockey' }, { letter: 'B', text: 'volleyball' }, { letter: 'C', text: 'basketball' }] },
+            { stem: '2. Where will the family have lunch?', passage: "Boy says: Are we having a picnic in the park? Mum: It might rain. We could eat at the café, but eight people will cost a lot. Let's make sandwiches and eat at home before we go out.", correct: 'C', options: [{ letter: 'A', text: 'at a café' }, { letter: 'B', text: 'in the park' }, { letter: 'C', text: 'at home' }] },
+            { stem: '3. What does Lucy need to collect first?', passage: "Lucy says: I need to return my library book today. Dad: We can do that later. Your new glasses are ready at the shop, and it closes at four. Lucy: Right, let's go there first.", correct: 'A', options: [{ letter: 'A', text: 'her glasses' }, { letter: 'B', text: 'a library book' }, { letter: 'C', text: 'a guitar' }] },
+            { stem: '4. What will Jack take on the trip?', passage: "Jack says: I wanted to take my guitar on the boat trip, but Dad says there's no room. My football is at school. I'll take my new kite for the beach afterwards.", correct: 'A', options: [{ letter: 'A', text: 'a kite' }, { letter: 'B', text: 'a guitar' }, { letter: 'C', text: 'a football' }] },
+            { stem: '5. Which jewellery does Eva choose?', passage: "Eva says: These earrings are lovely, but I wear earrings every day. The necklace is nice too, but I really want something different. I'll buy the bracelet.", correct: 'C', options: [{ letter: 'A', text: 'earrings' }, { letter: 'B', text: 'a necklace' }, { letter: 'C', text: 'a bracelet' }] },
+          ],
+        },
+        {
+          id: 'l123-4', number: '4', title: 'Activity 4 — What Kind of Answer?', navLabel: 'Ex.4 Kind of answer',
+          type: 'mc3',
+          instructions: 'Read each sentence. What kind of information is missing?',
+          tip: 'Use the words around the gap to predict the answer. Watch out for extra numbers and changed plans!',
+          items: [
+            { stem: '1. Please bring your ___.', correct: 'A', showLetters: false, options: [{ letter: 'A', text: 'object' }, { letter: 'B', text: 'place' }, { letter: 'C', text: 'price' }, { letter: 'D', text: 'time' }] },
+            { stem: '2. We will meet in the ___.', correct: 'B', showLetters: false, options: [{ letter: 'A', text: 'object' }, { letter: 'B', text: 'place' }, { letter: 'C', text: 'price' }, { letter: 'D', text: 'time' }] },
+            { stem: '3. The activity costs £___.', correct: 'C', showLetters: false, options: [{ letter: 'A', text: 'object' }, { letter: 'B', text: 'place' }, { letter: 'C', text: 'price' }, { letter: 'D', text: 'time' }] },
+            { stem: '4. We will arrive at ___.', correct: 'D', showLetters: false, options: [{ letter: 'A', text: 'object' }, { letter: 'B', text: 'place' }, { letter: 'C', text: 'price' }, { letter: 'D', text: 'time' }] },
+            { stem: '5. We are going to play ___.', correct: 'C', showLetters: false, options: [{ letter: 'A', text: 'object' }, { letter: 'B', text: 'place' }, { letter: 'C', text: 'sport' }, { letter: 'D', text: 'time' }] },
+          ],
+        },
+        {
+          id: 'l123-5', number: '5', title: 'Activity 5 — Number & Time Training', navLabel: 'Ex.5 Numbers & time',
+          type: 'gap',
+          instructions: 'Write the numbers in digits. (Example: two pounds fifty = £2.50)',
+          image: '../IMAGENES/trainer-extra/listening123-time-money.jpg',
+          items: [
+            { stem: 'four pounds fifty = £', accepted: ['4.50', '£4.50'] },
+            { stem: 'three pounds seventy-five = £', accepted: ['3.75', '£3.75'] },
+            { stem: 'quarter past five =', accepted: ['5:15', 'quarter past five'] },
+            { stem: 'half past six =', accepted: ['6:30', 'half past six'] },
+            { stem: 'quarter to seven =', accepted: ['6:45', 'quarter to seven'] },
+          ],
+        },
+        {
+          id: 'l123-6', number: '6', title: 'Activity 6 — KET-style Part 2 Practice', navLabel: 'Ex.6 Part 2 practice',
+          type: 'gap',
+          instructions: 'Read the message about a Saturday activity. Complete 6–10 with one word, a number, a date or a time.',
+          tip: 'Message from Ruby: "Hi! It\'s Ruby. About Saturday: I was going to bring my guitar, but we won\'t have time for music, so I\'m taking my basketball instead. Meet me outside the library, not the café — the café doesn\'t open until ten. At the sports centre, we can choose hockey or volleyball. I\'ve booked volleyball first because the hockey lesson is later. The ticket usually costs four pounds fifty, but students pay three seventy-five on Saturday. We\'ll leave the centre at six, and the bus takes thirty minutes, so I\'ll be back home at half past six. See you!"',
+          items: [
+            { stem: '6. Bring:', accepted: ['basketball'] },
+            { stem: '7. Meet outside the:', accepted: ['library'] },
+            { stem: '8. First activity:', accepted: ['volleyball'] },
+            { stem: '9. Special ticket price: £', accepted: ['3.75'] },
+            { stem: '10. Back home at:', accepted: ['6:30', 'half past six'] },
+          ],
+        },
+        {
+          id: 'l123-7', number: '7', title: 'Activity 7 — Paraphrase Match', navLabel: 'Ex.7 Paraphrase',
+          type: 'match',
+          instructions: 'Match each phrase with a phrase that means the same.',
+          tip: 'Listen for paraphrases and contrast words like but, actually, now, only and used to.',
+          options: [
+            { letter: 'A', text: 'my favourite subject' },
+            { letter: 'B', text: 'great / awesome' },
+            { letter: 'C', text: 'feel worried' },
+            { letter: 'D', text: 'not difficult' },
+            { letter: 'E', text: 'very little' },
+          ],
+          pairs: [
+            { left: '1. feel nervous', correct: 'C' },
+            { left: '2. really good', correct: 'B' },
+            { left: '3. the subject I like best', correct: 'A' },
+            { left: '4. not hard', correct: 'D' },
+            { left: '5. not a lot', correct: 'E' },
+          ],
+        },
+        {
+          id: 'l123-8', number: '8', title: 'Activity 8 — KET-style Part 3 Practice', navLabel: 'Ex.8 Part 3 practice',
+          type: 'mc3',
+          instructions: 'Read the conversation between Leo and Sara about an after-school club. Choose A, B or C.',
+          passage: `Sara: I wasn't sure about joining the club, Leo. I thought I'd feel worried, but on the first day I was actually really excited.
+Leo: Me too. The room is old and quite small, but everyone in the group is friendly.
+Sara: Yes, and Mr Green is helpful too.
+Leo: He is, but meeting the other students is the best thing for me.
+Sara: What activity do you like most?
+Leo: Basketball. You?
+Sara: I used to love playing the guitar, but volleyball is my favourite now.
+Leo: Do you practise at home?
+Sara: About half an hour.
+Leo: I do an hour. Two hours would be too much!
+Sara: At my old club we hardly ever did sport.
+Leo: Same for me. We did lots of music and homework activities, but very little sport.`,
+          items: [
+            { stem: '11. How did Sara feel on the first day of the club?', correct: 'B', options: [{ letter: 'A', text: 'worried' }, { letter: 'B', text: 'excited' }, { letter: 'C', text: 'bored' }] },
+            { stem: '12. What does Leo like most about the club?', correct: 'B', options: [{ letter: 'A', text: 'the teacher' }, { letter: 'B', text: 'the other students' }, { letter: 'C', text: 'the building' }] },
+            { stem: "13. Which activity is Sara's favourite now?", correct: 'C', options: [{ letter: 'A', text: 'basketball' }, { letter: 'B', text: 'guitar' }, { letter: 'C', text: 'volleyball' }] },
+            { stem: '14. How long does Leo practise at home?', correct: 'B', options: [{ letter: 'A', text: '30 minutes' }, { letter: 'B', text: 'one hour' }, { letter: 'C', text: 'two hours' }] },
+            { stem: '15. What did both students do less often before?', correct: 'A', options: [{ letter: 'A', text: 'sport' }, { letter: 'B', text: 'homework' }, { letter: 'C', text: 'music' }] },
+          ],
+        },
+      ],
+    },
+
+    /* ============ LISTENING TRAINER — TEST 1 · PARTS 4 & 5 ============ */
+    {
+      id: 'listening45',
+      label: 'Listening Trainer — Test 1 · Parts 4 & 5',
+      description: 'No audios yet! First, practise the vocabulary, strategies and tips you need for KET Listening.',
+      poster: '../IMAGENES/trainer-extra/listening45-vocab-poster.jpg',
+      crossLinks: [
+        { label: 'Practise Test 1 — Listening Part 4', href: 'test1.html#l4' },
+        { label: 'Practise Test 1 — Listening Part 5', href: 'test1.html#l5' },
+      ],
+      exercises: [
+        {
+          id: 'l45-1', number: '1', title: 'Activity 1 — Question Target', navLabel: 'Ex.1 Question target',
+          type: 'mc3',
+          instructions: 'Look at each question. Choose the kind of answer you need to listen for.',
+          tip: 'A conversation can mention several answers. Focus on the exact question and the final answer.',
+          items: [
+            { stem: '1. How did she get it?', correct: 'A', showLetters: false, options: [{ letter: 'A', text: 'method' }, { letter: 'B', text: 'place' }, { letter: 'C', text: 'future plan' }] },
+            { stem: '2. What type of lesson was it?', correct: 'A', showLetters: false, options: [{ letter: 'A', text: 'subject or activity' }, { letter: 'B', text: 'price' }, { letter: 'C', text: 'person' }] },
+            { stem: '3. Where will he stay?', correct: 'A', showLetters: false, options: [{ letter: 'A', text: 'place' }, { letter: 'B', text: 'time' }, { letter: 'C', text: 'opinion' }] },
+            { stem: '4. What should they do now?', correct: 'A', showLetters: false, options: [{ letter: 'A', text: 'next action' }, { letter: 'B', text: 'previous action' }, { letter: 'C', text: 'later action' }] },
+            { stem: '5. What will they do together?', correct: 'A', showLetters: false, options: [{ letter: 'A', text: 'shared activity' }, { letter: 'B', text: 'separate activity' }, { letter: 'C', text: 'transport' }] },
+          ],
+        },
+        {
+          id: 'l45-2', number: '2', title: 'Activity 2 — Distractor Detective', navLabel: 'Ex.2 Distractors',
+          type: 'mc3',
+          instructions: 'Read each short text and choose the final, correct answer.',
+          items: [
+            { stem: '1. How did Nina get the book?', passage: 'She saw it in a bookshop last week and nearly bought it. Her cousin had already ordered one for her birthday, though, so she received it as a present.', correct: 'B', options: [{ letter: 'A', text: 'she bought it' }, { letter: 'B', text: 'it was a present' }, { letter: 'C', text: 'she borrowed it' }] },
+            { stem: '2. What type of lesson did Max have?', passage: "The teacher showed us how to move our fingers to make different sounds. I thought we'd sing, but we spent the whole lesson learning the guitar.", correct: 'B', options: [{ letter: 'A', text: 'singing' }, { letter: 'B', text: 'guitar' }, { letter: 'C', text: 'dance' }] },
+            { stem: '3. Where will Oliver sleep on holiday?', passage: "My aunt has a house near the beach, but all the bedrooms are full. I don't want a hotel, so I'm going to camp in her garden.", correct: 'C', options: [{ letter: 'A', text: 'in a house' }, { letter: 'B', text: 'in a hotel' }, { letter: 'C', text: 'in a tent' }] },
+          ],
+        },
+        {
+          id: 'l45-3', number: '3', title: 'Activity 3 — KET-style Part 4 Practice', navLabel: 'Ex.3 Part 4 practice',
+          type: 'mc3',
+          instructions: 'Read each new mini-dialogue and choose A, B or C.',
+          items: [
+            { stem: '1. What will the girl do with the book next?', passage: "Boy: Is that the book you won as a prize?\nGirl: Yes. I finished it yesterday. I thought about taking it to the bookshop to exchange it, but my friend Mia wants to read it. I'll give it to her tomorrow.\nBoy: Nice.", correct: 'B', options: [{ letter: 'A', text: 'return it to the library' }, { letter: 'B', text: 'lend it to a friend' }, { letter: 'C', text: 'take it to a bookshop' }] },
+            { stem: '2. What lesson did the boy have?', passage: "Boy: We didn't use our maths books today. Our teacher put on some music and showed us how to move our feet and arms. My legs hurt now!\nGirl: Sounds fun.", correct: 'C', options: [{ letter: 'A', text: 'music' }, { letter: 'B', text: 'maths' }, { letter: 'C', text: 'dance' }] },
+            { stem: '3. Where will the girl stay?', passage: "Girl: My uncle invited us to his house, but he's having work done there. The campsite is too far from town, so Mum booked a small hotel near the beach.", correct: 'A', options: [{ letter: 'A', text: 'in a hotel' }, { letter: 'B', text: 'in a tent' }, { letter: 'C', text: "in her uncle's house" }] },
+            { stem: '4. What should the students do now?', passage: "Teacher: You've finished the questions by yourselves. Before we start the next section, work with your partner and check whether your answers are the same.", correct: 'A', options: [{ letter: 'A', text: 'compare answers' }, { letter: 'B', text: 'start the next section' }, { letter: 'C', text: 'work alone' }] },
+            { stem: '5. What will they do together?', passage: "Girl: I'll cycle to your house.\nBoy: Great. Mum and I are going into the forest to collect mushrooms. Come with us.\nGirl: I'd love to. I can't stay for dinner, though.", correct: 'B', options: [{ letter: 'A', text: 'cycle' }, { letter: 'B', text: 'collect mushrooms' }, { letter: 'C', text: 'have dinner' }] },
+          ],
+        },
+        {
+          id: 'l45-4', number: '4', title: 'Activity 4 — Job Vocabulary', navLabel: 'Ex.4 Job vocab',
+          type: 'reference',
+          tables: [
+            {
+              title: 'Learn these job words — you will need them in Activity 6',
+              headers: ['Job', 'Meaning'],
+              rows: [
+                ['actor', 'be in plays'],
+                ['tour guide', 'show visitors around and explain a place'],
+                ['farmer', 'look after animals / work on a farm'],
+                ['dance teacher', 'teach people how to dance'],
+                ['cook / chef', 'prepare meals'],
+                ['dentist', "look after people's teeth"],
+                ['teacher', 'help students learn'],
+              ],
+            },
+          ],
+          tip: 'A hobby or a family job can be a distractor. Listen for wants to, hopes to, is going to and would like to.',
+        },
+        {
+          id: 'l45-5', number: '5', title: 'Activity 5 — Hobby, Family Job or Future Job?', navLabel: 'Ex.5 H / F / J',
+          type: 'gap',
+          instructions: 'Write H (hobby/ability), F (family/background) or J (future job). (Example: She wants to be a dentist. → J)',
+          items: [
+            { stem: '1. Her father is a teacher.', accepted: ['f'] },
+            { stem: '2. He plays the piano very well.', accepted: ['h'] },
+            { stem: '3. She hopes to show visitors around her town.', accepted: ['j'] },
+            { stem: '4. He loves cooking at weekends.', accepted: ['h'] },
+            { stem: "5. She would like to work with people's teeth.", accepted: ['j'] },
+            { stem: '6. His family keeps animals.', accepted: ['f'] },
+          ],
+        },
+        {
+          id: 'l45-6', number: '6', title: 'Activity 6 — KET-style Part 5 Practice', navLabel: 'Ex.6 Part 5 practice',
+          type: 'match',
+          instructions: 'Read the conversation about the jobs five friends want to do. Match 21–25 with A–H. There are three extra jobs.',
+          passage: `Dad: What jobs do your friends want to do?
+Girl: Maya's mum teaches at our school, and Maya is good at explaining things, but she doesn't want to be a teacher. She loves the theatre and hopes to be in plays.
+Dad: What about Ben?
+Girl: He helps his grandparents with their animals and wants to work on a farm when he's older.
+Dad: Lucy loves music, doesn't she?
+Girl: Yes, she plays the guitar, but she wants to show visitors around our town and tell them about its history.
+Dad: And Harry?
+Girl: He cooks all the time at home, but that's just a hobby. He'd like to help people with their teeth.
+Dad: And Ella?
+Girl: She's a brilliant dancer and wants to teach children to dance.`,
+          options: [
+            { letter: 'A', text: 'actor' },
+            { letter: 'B', text: 'cook' },
+            { letter: 'C', text: 'dentist' },
+            { letter: 'D', text: 'farmer' },
+            { letter: 'E', text: 'teacher' },
+            { letter: 'F', text: 'tour guide' },
+            { letter: 'G', text: 'dance teacher' },
+            { letter: 'H', text: 'musician' },
+          ],
+          pairs: [
+            { left: '21. Maya', correct: 'A' },
+            { left: '22. Ben', correct: 'D' },
+            { left: '23. Lucy', correct: 'F' },
+            { left: '24. Harry', correct: 'C' },
+            { left: '25. Ella', correct: 'G' },
+          ],
+        },
+        {
+          id: 'l45-7', number: '7', title: 'Activity 7 — Intention Language', navLabel: 'Ex.7 Intentions',
+          type: 'gap',
+          instructions: 'Complete each sentence with wants to, hopes to, would like to or is going to. (Example: He wants to be a teacher.) More than one answer may be accepted.',
+          items: [
+            { stem: '1. She ___ be in plays one day.', accepted: ['hopes to', 'wants to', 'is going to', 'would like to'] },
+            { stem: '2. He ___ work with animals when he is older.', accepted: ['wants to', 'hopes to', 'is going to', 'would like to'] },
+            { stem: '3. She ___ show visitors around the town.', accepted: ['is going to', 'wants to', 'hopes to', 'would like to'] },
+            { stem: "4. He ___ work with people's teeth.", accepted: ['would like to', 'wants to', 'hopes to', 'is going to'] },
+            { stem: '5. She ___ teach children to dance.', accepted: ['wants to', 'hopes to', 'is going to', 'would like to'] },
+          ],
+        },
+      ],
+    },
   ],
 };

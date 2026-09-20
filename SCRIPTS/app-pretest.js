@@ -64,6 +64,7 @@ function updatePartScore(partEl) {
 
 function buildMatch(part) {
   const wrap = el('div', 'match-list');
+  if (part.passage) wrap.appendChild(el('div', 'mc-passage', part.passage));
   part.pairs.forEach((pair) => {
     const row = el('div', 'match-row');
     row.dataset.kind = 'match';
@@ -107,9 +108,11 @@ function buildMatch(part) {
 
 function buildMc3(part) {
   const wrap = el('div');
+  if (part.passage) wrap.appendChild(el('div', 'mc-passage', part.passage));
   part.items.forEach((item) => {
     const box = el('div', 'mc-item');
     box.dataset.kind = 'mc';
+    if (item.passage) box.appendChild(el('div', 'mc-passage', item.passage));
     box.appendChild(el('div', 'mc-stem', item.stem));
     const opts = el('div', 'options');
     opts.dataset.correct = item.correct;
@@ -157,6 +160,11 @@ function buildMc3(part) {
 
 function buildGap(part) {
   const wrap = el('div');
+  if (part.image) {
+    const img = document.createElement('img');
+    img.src = part.image; img.alt = part.title || ''; img.className = 'cloze-img';
+    wrap.appendChild(img);
+  }
   if (part.wordBank) {
     const wb = el('div', 'wordbank', 'Word bank: ' + part.wordBank.join(' • '));
     wrap.appendChild(wb);
@@ -260,6 +268,11 @@ function buildCloze(part) {
 function buildWriting(part) {
   const wrap = el('div', 'writing-box');
   if (part.prompt) wrap.appendChild(el('p', 'instructions', part.prompt));
+  if (part.image) {
+    const img = document.createElement('img');
+    img.src = part.image; img.alt = part.title || ''; img.className = 'cloze-img';
+    wrap.appendChild(img);
+  }
   const ta = document.createElement('textarea');
   ta.placeholder = part.placeholder || 'Write your answer here...';
   wrap.appendChild(ta);
@@ -295,6 +308,11 @@ function buildWriting(part) {
 
 function buildWritingMulti(part) {
   const wrap = el('div');
+  if (part.image) {
+    const img = document.createElement('img');
+    img.src = part.image; img.alt = part.title || ''; img.className = 'cloze-img';
+    wrap.appendChild(img);
+  }
   part.items.forEach(item => {
     const box = el('div', 'wm-item');
     box.appendChild(el('div', 'wm-stem', item.stem));
