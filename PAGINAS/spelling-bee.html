@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐝 Spelling &amp; Number Bee</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#FBF7FF; --panel:#FFFFFF; --ink:#463B63; --ink-soft:#8478A3;
+  --pink:#FF6FA5; --pink-light:#FFE3EF; --purple:#8C6FF7; --purple-dark:#6B4FD6; --purple-light:#EFE8FF;
+  --mint:#12B886; --mint-light:#DFFBF0; --sun:#FFB627; --sun-light:#FFF2D6;
+  --coral:#FF6B6B; --coral-light:#FFE3E3; --sky:#4DC3F0; --sky-light:#E3F6FE;
+  --line:#F0E6FA; --radius:20px;
+  --sans:'Nunito', sans-serif; --display:'Baloo 2', var(--sans);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:radial-gradient(circle at 8% 6%, var(--sky-light) 0, transparent 40%), radial-gradient(circle at 95% 12%, var(--sun-light) 0, transparent 35%), var(--bg);color:var(--ink);font-family:var(--sans);font-weight:600;line-height:1.55;}
+a{color:var(--purple-dark);}
+.topbar{background:linear-gradient(120deg, var(--pink) 0%, var(--purple) 100%);color:#fff;padding:26px 24px;}
+.topbar-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.brand{font-family:var(--display);font-weight:800;font-size:1.6rem;}
+.brand small{display:block;font-family:var(--sans);font-weight:700;font-size:0.85rem;color:#FFE3F1;margin-top:2px;}
+.topbar-nav{display:flex;gap:10px;flex-wrap:wrap;}
+.topbar-nav a{font-family:var(--display);font-weight:600;font-size:0.9rem;color:var(--purple-dark);background:#fff;padding:9px 16px;border-radius:999px;text-decoration:none;box-shadow:0 3px 0 rgba(0,0,0,.12);transition:transform .12s ease;}
+.topbar-nav a:hover{transform:translateY(-2px);}
+main{max-width:900px;margin:0 auto;padding:26px 20px 70px;}
+.intro{font-weight:700;font-size:1.02rem;color:var(--ink-soft);margin:0 0 24px;}
+.section-head{margin:36px 0 12px;}
+.section-head h2{font-family:var(--display);font-size:1.35rem;color:var(--purple-dark);margin:0 0 4px;}
+.section-head p{margin:0;color:var(--ink-soft);font-size:0.94rem;}
+.part{background:var(--panel);border:3px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-bottom:24px;}
+.part-head{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.badge{font-family:var(--display);font-weight:700;font-size:0.82rem;color:#fff;background:var(--sun);padding:6px 14px;border-radius:999px;box-shadow:0 2px 0 rgba(0,0,0,.08);flex:none;}
+.part-head h3{font-family:var(--display);font-size:1.15rem;margin:0;color:var(--ink);}
+.instructions{font-weight:700;color:var(--ink-soft);margin:0 0 12px;}
+.tip{display:flex;gap:8px;background:var(--sun-light);border:2px dashed var(--sun);border-radius:14px;padding:12px 16px;font-size:0.9rem;margin-bottom:16px;}
+.tip b{color:#B4780A;flex:none;}
+.warn-box{background:var(--coral-light);border:2px solid #FFC9C9;border-radius:14px;padding:12px 16px;font-size:0.9rem;margin-top:14px;}
+.warn-box b{color:#C23B3B;}
+.alpha-table{width:100%;border-collapse:collapse;margin:12px 0;}
+.alpha-table th{background:var(--purple-light);color:var(--purple-dark);text-align:left;padding:9px 12px;font-family:var(--display);font-size:0.9rem;}
+.alpha-table td{padding:8px 12px;border-top:1px solid var(--line);font-size:0.92rem;}
+
+.item-row{border-top:3px dotted var(--line);padding:18px 0;}
+.item-row:first-child{border-top:none;padding-top:0;}
+.item-num{font-family:var(--display);font-weight:700;color:var(--purple-dark);margin-bottom:8px;display:block;}
+.speak-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-weight:700;font-size:0.88rem;color:#fff;background:var(--sky);border:none;padding:9px 16px;border-radius:999px;cursor:pointer;box-shadow:0 3px 0 #2C9CC9;transition:transform .1s ease;margin-bottom:10px;}
+.speak-btn:hover{transform:translateY(-2px);}
+.speak-btn:active{transform:translateY(1px);box-shadow:0 1px 0 #2C9CC9;}
+input.bee-input{font-family:var(--sans);font-weight:700;font-size:0.98rem;border:2px solid var(--line);border-radius:12px;padding:9px 14px;width:260px;max-width:100%;letter-spacing:0.5px;display:block;margin-top:6px;}
+input.bee-input.correct{border-color:var(--mint);background:var(--mint-light);}
+input.bee-input.incorrect{border-color:var(--coral);background:var(--coral-light);}
+.bee-answer{font-size:0.82rem;color:var(--ink-soft);display:none;margin-top:6px;}
+.bee-answer.show{display:block;}
+.item-check{display:inline-flex;align-items:center;font-family:var(--display);font-weight:700;font-size:0.82rem;color:var(--purple-dark);background:#fff;border:2px solid var(--purple);padding:6px 14px;border-radius:999px;cursor:pointer;margin-top:10px;transition:transform .1s ease,background .1s ease;}
+.item-check:hover{background:var(--purple-light);transform:translateY(-1px);}
+.item-check.item-reset{border-color:var(--mint);color:#0e8f6c;}
+.item-check.item-reset:hover{background:var(--mint-light);}
+.part-actions{display:flex;align-items:center;gap:14px;margin-top:18px;flex-wrap:wrap;}
+.btn{font-family:var(--display);font-weight:700;font-size:0.92rem;padding:11px 22px;border-radius:999px;border:none;cursor:pointer;background:var(--pink);color:#fff;box-shadow:0 3px 0 #D94F82;transition:transform .1s ease;}
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:translateY(1px);box-shadow:0 1px 0 #D94F82;}
+.btn.ghost{background:#fff;color:var(--purple-dark);border:2px solid var(--purple);box-shadow:none;}
+.btn.ghost:hover{background:var(--purple-light);}
+.btn:disabled{opacity:0.55;cursor:default;box-shadow:none;transform:none;}
+.score{font-family:var(--display);font-weight:700;font-size:0.95rem;color:var(--ink-soft);}
+.score.good{color:var(--mint);}
+footer{text-align:center;font-size:0.82rem;font-weight:700;color:var(--ink-soft);padding:26px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">🐝 Spelling &amp; Number Bee <small>Names, streets, phone numbers &amp; prices — with real audio!</small></div>
+    <div class="topbar-nav">
+      <a href="../index.html">🏠 Home</a>
+      <a href="pretest1.html">📚 Trainer Pre-Test 1</a>
+    </div>
+  </div>
+</div>
+
+<main>
+  <p class="intro" id="intro-text"></p>
+  <div id="sections"></div>
+</main>
+
+<footer>READY, SET, KET! · Spelling &amp; Number Bee · Alina Iuga</footer>
+
+<script>
+/* ---------- helpers ---------- */
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+function normText(s) {
+  return (s || '').toUpperCase().trim().replace(/\s+/g, ' ');
+}
+function normDigits(s) {
+  return (s || '').replace(/\D/g, '');
+}
+function normPrice(s) {
+  return (s || '').toLowerCase().trim().replace('£', '').replace(/\s+/g, '');
+}
+
+/* ---------- speech ---------- */
+function speak(text) {
+  if (!window.speechSynthesis) { alert("Sorry, your browser can't play audio for this."); return; }
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-GB'; u.rate = 0.78; u.pitch = 1.05;
+  const voices = window.speechSynthesis.getVoices();
+  const gb = voices.find(v => v.lang === 'en-GB') || voices.find(v => v.lang && v.lang.startsWith('en'));
+  if (gb) u.voice = gb;
+  window.speechSynthesis.speak(u);
+}
+
+/* ---------- spelling / number helpers (also used to build the data below) ---------- */
+function spellLetters(word) {
+  const letters = word.toUpperCase().split('');
+  const parts = [];
+  for (let i = 0; i < letters.length; i++) {
+    if (letters[i] === letters[i - 1]) parts[parts.length - 1] = 'double ' + letters[i];
+    else parts.push(letters[i]);
+  }
+  return parts.join(', ');
+}
+function digitWord(d) {
+  return d === '0' ? 'oh' : ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'][+d];
+}
+function phoneSpeech(numStr) {
+  const digits = numStr.replace(/\D/g, '').split('');
+  const out = [];
+  for (let i = 0; i < digits.length; i++) {
+    if (digits[i] === digits[i - 1]) out[out.length - 1] = 'double ' + digitWord(digits[i]);
+    else out.push(digitWord(digits[i]));
+  }
+  return out.join(', ');
+}
+const ONES = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+const TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+function numberWords(n) {
+  if (n < 20) return ONES[n];
+  const t = Math.floor(n / 10), o = n % 10;
+  return TENS[t] + (o ? '-' + ONES[o] : '');
+}
+function priceWords(pounds, pence) {
+  if (pounds === 0) return numberWords(pence) + ' pence';
+  if (pence === 0) return numberWords(pounds) + ' pound' + (pounds === 1 ? '' : 's');
+  return numberWords(pounds) + ' pound' + (pounds === 1 ? '' : 's') + ' ' + numberWords(pence);
+}
+
+/* ---------- per-item check/reset toggle ---------- */
+function addItemCheckButton(container, onCheck, onReset) {
+  function renderCheckBtn() {
+    const btn = el('button', 'item-check', 'Check ✔');
+    btn.type = 'button';
+    btn.addEventListener('click', () => { onCheck(); btn.replaceWith(renderResetBtn()); });
+    return btn;
+  }
+  function renderResetBtn() {
+    const btn = el('button', 'item-check item-reset', '🔄 Try again');
+    btn.type = 'button';
+    btn.addEventListener('click', () => { onReset(); btn.replaceWith(renderCheckBtn()); });
+    return btn;
+  }
+  container.appendChild(renderCheckBtn());
+}
+function updatePartScore(partEl) {
+  if (!partEl) return;
+  const items = partEl.querySelectorAll('[data-kind]');
+  const total = items.length;
+  let graded = 0, correct = 0;
+  items.forEach(it => { if (it.dataset.graded === '1') { graded++; if (it.dataset.correct === '1') correct++; } });
+  const scoreEl = partEl.querySelector('.score');
+  if (scoreEl) {
+    if (graded === 0) { scoreEl.textContent = ''; scoreEl.classList.remove('good'); }
+    else {
+      const perfect = graded === total && correct === total;
+      scoreEl.textContent = `${correct} / ${total} correct${perfect ? ' 🎉' : ''}`;
+      scoreEl.classList.toggle('good', perfect);
+    }
+  }
+}
+
+/* ---------- generic "listen and type" builder (used by every activity) ---------- */
+function buildListenType(part) {
+  const wrap = el('div');
+  part.items.forEach(item => {
+    const row = el('div', 'item-row'); row.dataset.kind = 'bee';
+    row.appendChild(el('span', 'item-num', item.num + '. ' + (item.label || '')));
+    const sbtn = el('button', 'speak-btn', '🔊 Listen');
+    sbtn.type = 'button';
+    sbtn.addEventListener('click', () => speak(item.speakText));
+    row.appendChild(sbtn);
+
+    const input = document.createElement('input');
+    input.type = 'text'; input.className = 'bee-input'; input.placeholder = item.placeholder || 'Type here...';
+    row.appendChild(input);
+    const ans = el('span', 'bee-answer', '(' + item.accepted[0] + ')');
+    row.appendChild(ans);
+
+    addItemCheckButton(row,
+      () => {
+        const val = item.normalize(input.value);
+        const ok = item.accepted.map(item.normalize).includes(val) && val !== '';
+        input.classList.toggle('correct', ok); input.classList.toggle('incorrect', !ok);
+        input.disabled = true; ans.classList.add('show');
+        row.dataset.graded = '1'; row.dataset.correct = ok ? '1' : '0';
+        updatePartScore(row.closest('.part'));
+      },
+      () => {
+        input.value = ''; input.disabled = false; input.classList.remove('correct', 'incorrect'); ans.classList.remove('show');
+        delete row.dataset.graded; delete row.dataset.correct;
+        updatePartScore(row.closest('.part'));
+      }
+    );
+    wrap.appendChild(row);
+  });
+  return wrap;
+}
+
+function buildPart(part) {
+  const section = el('section', 'part'); section.id = part.id;
+  const head = el('div', 'part-head');
+  head.appendChild(el('span', 'badge', part.number));
+  head.appendChild(el('h3', null, part.title));
+  section.appendChild(head);
+  const body = el('div');
+  if (part.instructions) body.appendChild(el('p', 'instructions', part.instructions));
+  if (part.tip) { const tip = el('div', 'tip'); tip.innerHTML = `<b>⭐ Tip:</b> <span>${part.tip}</span>`; body.appendChild(tip); }
+  body.appendChild(buildListenType(part));
+
+  const actions = el('div', 'part-actions');
+  const checkBtn = el('button', 'btn', '✅ Check my answers');
+  checkBtn.type = 'button';
+  const resetBtn = el('button', 'btn ghost', '🔄 Try again');
+  resetBtn.type = 'button'; resetBtn.style.display = 'none';
+  checkBtn.addEventListener('click', () => {
+    section.querySelectorAll('.item-check:not(.item-reset)').forEach(b => b.click());
+    checkBtn.disabled = true; checkBtn.textContent = '✔️ Checked';
+    resetBtn.style.display = 'inline-block';
+  });
+  resetBtn.addEventListener('click', () => {
+    const fresh = buildPart(part);
+    section.replaceWith(fresh);
+  });
+  actions.appendChild(checkBtn); actions.appendChild(resetBtn); actions.appendChild(el('span', 'score', ''));
+  body.appendChild(actions);
+  section.appendChild(body);
+  return section;
+}
+
+function buildReference(sec) {
+  const wrap = el('div', 'part'); wrap.id = sec.id;
+  const head = el('div', 'part-head');
+  head.appendChild(el('span', 'badge', '📚'));
+  head.appendChild(el('h3', null, sec.title));
+  wrap.appendChild(head);
+
+  const table = document.createElement('table'); table.className = 'alpha-table';
+  table.innerHTML = `<tr><th>Sound-alike group</th><th>Letters</th></tr>` +
+    sec.groups.map(g => `<tr><td>${g.name}</td><td><b>${g.letters}</b></td></tr>`).join('');
+  wrap.appendChild(table);
+
+  const warn = el('div', 'warn-box');
+  warn.innerHTML = `<b>⚠️ Careful!</b> ${sec.warning}`;
+  wrap.appendChild(warn);
+  return wrap;
+}
+
+/* ==================== DATA ==================== */
+const BEE_DATA = {
+  intro: "Listen carefully and type what you hear — just like real KET Listening! Some people spell out their names or streets, and some say phone numbers and prices. Press 🔊 Listen as many times as you like.",
+  reference: {
+    id: 'ref', title: 'Letters That Sound Similar',
+    groups: [
+      { name: 'B / P / V', letters: 'B, P, V' },
+      { name: 'M / N', letters: 'M, N' },
+      { name: 'S / F / X', letters: 'S, F, X' },
+      { name: 'I / E / Y', letters: 'I, E, Y' },
+      { name: 'G / J', letters: 'G, J' },
+      { name: 'A / H / K', letters: 'A, H, K' },
+    ],
+    warning: `When a letter repeats (like the two S's in "Fossley"), we say <b>"double S"</b> instead of "S, S". And in phone numbers, <b>0</b> is always said as <b>"oh"</b>, and repeated digits use "double" too — like <b>"oh, double five"</b> for 055.`,
+  },
+  sections: [
+    {
+      id: 'bee1', label: 'Activity 1 — Spell the Name', navLabel: 'Ex.1 Names',
+      description: 'Listen to how each surname is spelled, then type it.',
+      parts: [{
+        id: 'ex1', number: '1', title: 'Listen and spell the surname', instructions: 'Press 🔊 Listen, then type the surname in CAPITAL or small letters.',
+        tip: 'Listen for "double" — it means a letter is written twice in a row!',
+        items: [
+          { num: 1, label: 'Surname:', speakText: `Her surname is Thompson. That's spelled ${spellLetters('THOMPSON')}.`, accepted: ['THOMPSON'], normalize: normText, placeholder: 'Type the surname...' },
+          { num: 2, label: 'Surname:', speakText: `His surname is Bailey. That's spelled ${spellLetters('BAILEY')}.`, accepted: ['BAILEY'], normalize: normText, placeholder: 'Type the surname...' },
+          { num: 3, label: 'Surname:', speakText: `Her surname is Fitzgerald. That's spelled ${spellLetters('FITZGERALD')}.`, accepted: ['FITZGERALD'], normalize: normText, placeholder: 'Type the surname...' },
+          { num: 4, label: 'Surname:', speakText: `His surname is Higgins. That's spelled ${spellLetters('HIGGINS')}.`, accepted: ['HIGGINS'], normalize: normText, placeholder: 'Type the surname...' },
+          { num: 5, label: 'Surname:', speakText: `Her surname is Sanchez. That's spelled ${spellLetters('SANCHEZ')}.`, accepted: ['SANCHEZ'], normalize: normText, placeholder: 'Type the surname...' },
+          { num: 6, label: 'Surname:', speakText: `His surname is Whitworth. That's spelled ${spellLetters('WHITWORTH')}.`, accepted: ['WHITWORTH'], normalize: normText, placeholder: 'Type the surname...' },
+        ],
+      }],
+    },
+    {
+      id: 'bee2', label: 'Activity 2 — Spell the Street', navLabel: 'Ex.2 Streets',
+      description: 'Listen to how each street name is spelled, then type it.',
+      parts: [{
+        id: 'ex2', number: '2', title: 'Listen and spell the street name', instructions: 'Press 🔊 Listen, then type the street name.',
+        items: [
+          { num: 1, label: 'Street:', speakText: `The street is called Bellview Road. That's spelled ${spellLetters('BELLVIEW')}.`, accepted: ['BELLVIEW'], normalize: normText, placeholder: 'Type the street name...' },
+          { num: 2, label: 'Street:', speakText: `She lives on Cross Street. That's spelled ${spellLetters('CROSS')}.`, accepted: ['CROSS'], normalize: normText, placeholder: 'Type the street name...' },
+          { num: 3, label: 'Street:', speakText: `The address is Kingfisher Avenue. That's spelled ${spellLetters('KINGFISHER')}.`, accepted: ['KINGFISHER'], normalize: normText, placeholder: 'Type the street name...' },
+          { num: 4, label: 'Street:', speakText: `It's on Appleby Lane. That's spelled ${spellLetters('APPLEBY')}.`, accepted: ['APPLEBY'], normalize: normText, placeholder: 'Type the street name...' },
+          { num: 5, label: 'Street:', speakText: `The road is called Windermere Close. That's spelled ${spellLetters('WINDERMERE')}.`, accepted: ['WINDERMERE'], normalize: normText, placeholder: 'Type the street name...' },
+        ],
+      }],
+    },
+    {
+      id: 'bee3', label: 'Activity 3 — Write the Phone Number', navLabel: 'Ex.3 Phone numbers',
+      description: 'Listen to each phone number and type only the digits.',
+      parts: [{
+        id: 'ex3', number: '3', title: 'Listen and write the phone number', instructions: 'Press 🔊 Listen, then type the number (spaces are OK).',
+        tip: 'Remember: "oh" means 0, and "double five" means 55!',
+        items: [
+          { num: 1, label: 'Phone number:', speakText: `The phone number is ${phoneSpeech('07714552398')}.`, accepted: ['07714552398'], normalize: normDigits, placeholder: 'e.g. 07123 456789' },
+          { num: 2, label: 'Phone number:', speakText: `The phone number is ${phoneSpeech('01865774120')}.`, accepted: ['01865774120'], normalize: normDigits, placeholder: 'e.g. 07123 456789' },
+          { num: 3, label: 'Phone number:', speakText: `The phone number is ${phoneSpeech('07990336154')}.`, accepted: ['07990336154'], normalize: normDigits, placeholder: 'e.g. 07123 456789' },
+          { num: 4, label: 'Phone number:', speakText: `The phone number is ${phoneSpeech('01142887633')}.`, accepted: ['01142887633'], normalize: normDigits, placeholder: 'e.g. 07123 456789' },
+          { num: 5, label: 'Phone number:', speakText: `The phone number is ${phoneSpeech('07456219980')}.`, accepted: ['07456219980'], normalize: normDigits, placeholder: 'e.g. 07123 456789' },
+        ],
+      }],
+    },
+    {
+      id: 'bee4', label: 'Activity 4 — Write the Price', navLabel: 'Ex.4 Prices',
+      description: 'Listen to each price and write it in pounds/pence.',
+      parts: [{
+        id: 'ex4', number: '4', title: 'Listen and write the price', instructions: 'Press 🔊 Listen, then type the price (e.g. £2.50 or 2.50).',
+        tip: 'A price under £1 is usually said in pence, like "seventy-five pence" (£0.75).',
+        items: [
+          { num: 1, label: 'Price:', speakText: `The ticket costs ${priceWords(2, 50)}.`, accepted: ['2.50', '£2.50', '2.5'], normalize: normPrice, placeholder: 'e.g. £2.50' },
+          { num: 2, label: 'Price:', speakText: `It costs ${priceWords(4, 99)}.`, accepted: ['4.99', '£4.99'], normalize: normPrice, placeholder: 'e.g. £2.50' },
+          { num: 3, label: 'Price:', speakText: `That's ${priceWords(0, 75)}.`, accepted: ['0.75', '£0.75', '.75', '75p'], normalize: normPrice, placeholder: 'e.g. £2.50' },
+          { num: 4, label: 'Price:', speakText: `The tour costs ${priceWords(13, 20)}.`, accepted: ['13.20', '£13.20', '13.2'], normalize: normPrice, placeholder: 'e.g. £2.50' },
+          { num: 5, label: 'Price:', speakText: `It's ${priceWords(1, 5)}.`, accepted: ['1.05', '£1.05'], normalize: normPrice, placeholder: 'e.g. £2.50' },
+          { num: 6, label: 'Price:', speakText: `The book costs ${priceWords(9, 0)}.`, accepted: ['9.00', '£9.00', '9', '9.0'], normalize: normPrice, placeholder: 'e.g. £2.50' },
+        ],
+      }],
+    },
+    {
+      id: 'bee5', label: '🏁 Final Challenge — Mixed Bee!', navLabel: 'Final challenge',
+      description: 'A mixed round — names, streets, numbers and prices all together. Good luck, detective!',
+      parts: [{
+        id: 'ex5', number: '🏁', title: 'Listen carefully — anything could come next!', instructions: 'Press 🔊 Listen, then type the answer.',
+        items: [
+          { num: 1, label: 'Surname:', speakText: `Her surname is Douglas. That's spelled ${spellLetters('DOUGLAS')}.`, accepted: ['DOUGLAS'], normalize: normText, placeholder: 'Type here...' },
+          { num: 2, label: 'Price:', speakText: `The drink costs ${priceWords(1, 40)}.`, accepted: ['1.40', '£1.40'], normalize: normPrice, placeholder: 'Type here...' },
+          { num: 3, label: 'Street:', speakText: `It's on Millbrook Street. That's spelled ${spellLetters('MILLBROOK')}.`, accepted: ['MILLBROOK'], normalize: normText, placeholder: 'Type here...' },
+          { num: 4, label: 'Phone number:', speakText: `The number is ${phoneSpeech('07823119045')}.`, accepted: ['07823119045'], normalize: normDigits, placeholder: 'Type here...' },
+          { num: 5, label: 'Surname:', speakText: `His surname is Pemberton. That's spelled ${spellLetters('PEMBERTON')}.`, accepted: ['PEMBERTON'], normalize: normText, placeholder: 'Type here...' },
+          { num: 6, label: 'Price:', speakText: `The ticket is ${priceWords(0, 60)}.`, accepted: ['0.60', '£0.60', '.60', '60p'], normalize: normPrice, placeholder: 'Type here...' },
+          { num: 7, label: 'Street:', speakText: `The address is Hillcrest Avenue. That's spelled ${spellLetters('HILLCREST')}.`, accepted: ['HILLCREST'], normalize: normText, placeholder: 'Type here...' },
+          { num: 8, label: 'Phone number:', speakText: `The number is ${phoneSpeech('01904667522')}.`, accepted: ['01904667522'], normalize: normDigits, placeholder: 'Type here...' },
+        ],
+      }],
+    },
+  ],
+};
+
+/* ==================== RENDER ==================== */
+function render() {
+  document.getElementById('intro-text').textContent = BEE_DATA.intro;
+  const main = document.getElementById('sections');
+  main.appendChild(buildReference(BEE_DATA.reference));
+  BEE_DATA.sections.forEach(sec => {
+    const head = el('div', 'section-head');
+    head.appendChild(el('h2', null, sec.label));
+    if (sec.description) head.appendChild(el('p', null, sec.description));
+    main.appendChild(head);
+    sec.parts.forEach(part => main.appendChild(buildPart(part)));
+  });
+}
+if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => {};
+render();
+</script>
+</body>
+</html>

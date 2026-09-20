@@ -495,6 +495,10 @@ function renderTest(test) {
   clockLink.href = 'time-telling.html';
   nav.appendChild(clockLink);
 
+  const beeLink = el('a', 'switch-test', '🐝 Spelling & Number Bee');
+  beeLink.href = 'spelling-bee.html';
+  nav.appendChild(beeLink);
+
   nav.appendChild(switchLink);
 
   document.getElementById('intro-text').textContent = test.intro;
