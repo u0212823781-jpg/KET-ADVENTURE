@@ -491,6 +491,10 @@ function renderTest(test) {
   trainerLink.href = 'pretest1.html';
   nav.appendChild(trainerLink);
 
+  const clockLink = el('a', 'switch-test', '🕐 Clock Detectives');
+  clockLink.href = 'time-telling.html';
+  nav.appendChild(clockLink);
+
   nav.appendChild(switchLink);
 
   document.getElementById('intro-text').textContent = test.intro;

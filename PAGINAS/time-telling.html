@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clock Detectives — British Time Telling</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#FBF7FF; --panel:#FFFFFF; --ink:#463B63; --ink-soft:#8478A3;
+  --pink:#FF6FA5; --pink-light:#FFE3EF; --purple:#8C6FF7; --purple-dark:#6B4FD6; --purple-light:#EFE8FF;
+  --mint:#12B886; --mint-light:#DFFBF0; --sun:#FFB627; --sun-light:#FFF2D6;
+  --coral:#FF6B6B; --coral-light:#FFE3E3; --sky:#4DC3F0; --sky-light:#E3F6FE;
+  --line:#F0E6FA; --radius:20px;
+  --serif:'Nunito', sans-serif; --sans:'Nunito', sans-serif; --display:'Baloo 2', var(--sans);
+}
+*{box-sizing:border-box;}
+body{margin:0;background:radial-gradient(circle at 8% 6%, var(--sky-light) 0, transparent 40%), radial-gradient(circle at 95% 12%, var(--sun-light) 0, transparent 35%), var(--bg);color:var(--ink);font-family:var(--sans);font-weight:600;line-height:1.55;}
+a{color:var(--purple-dark);}
+.topbar{background:linear-gradient(120deg, var(--pink) 0%, var(--purple) 100%);color:#fff;padding:26px 24px;}
+.topbar-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.brand{font-family:var(--display);font-weight:800;font-size:1.6rem;}
+.brand small{display:block;font-family:var(--sans);font-weight:700;font-size:0.85rem;color:#FFE3F1;margin-top:2px;}
+.topbar-nav{display:flex;gap:10px;flex-wrap:wrap;}
+.topbar-nav a{font-family:var(--display);font-weight:600;font-size:0.9rem;color:var(--purple-dark);background:#fff;padding:9px 16px;border-radius:999px;text-decoration:none;box-shadow:0 3px 0 rgba(0,0,0,.12);transition:transform .12s ease;}
+.topbar-nav a:hover{transform:translateY(-2px);}
+main{max-width:1000px;margin:0 auto;padding:26px 20px 70px;}
+.intro{font-weight:700;font-size:1.02rem;color:var(--ink-soft);margin:0 0 24px;}
+.section-head{margin:36px 0 12px;}
+.section-head h2{font-family:var(--display);font-size:1.35rem;color:var(--purple-dark);margin:0 0 4px;}
+.section-head p{margin:0;color:var(--ink-soft);font-size:0.94rem;}
+.part{background:var(--panel);border:3px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-bottom:24px;}
+.part-head{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.badge{font-family:var(--display);font-weight:700;font-size:0.82rem;color:#fff;background:var(--sun);padding:6px 14px;border-radius:999px;box-shadow:0 2px 0 rgba(0,0,0,.08);flex:none;}
+.part-head h3{font-family:var(--display);font-size:1.15rem;margin:0;color:var(--ink);}
+.instructions{font-weight:700;color:var(--ink-soft);margin:0 0 12px;}
+.tip{display:flex;gap:8px;background:var(--sun-light);border:2px dashed var(--sun);border-radius:14px;padding:12px 16px;font-size:0.9rem;margin-bottom:16px;}
+.tip b{color:#B4780A;flex:none;}
+
+/* reference */
+.rules-table{width:100%;border-collapse:collapse;margin:12px 0;}
+.rules-table th{background:var(--purple-light);color:var(--purple-dark);text-align:left;padding:9px 12px;font-family:var(--display);font-size:0.9rem;border-radius:8px 8px 0 0;}
+.rules-table td{padding:8px 12px;border-top:1px solid var(--line);font-size:0.92rem;}
+.warn-box{background:var(--coral-light);border:2px solid #FFC9C9;border-radius:14px;padding:12px 16px;font-size:0.9rem;margin-top:14px;}
+.warn-box b{color:#C23B3B;}
+.clock-diagram-wrap{display:flex;justify-content:center;margin:18px 0;}
+
+/* clock items */
+.item-row{border-top:3px dotted var(--line);padding:18px 0;display:flex;gap:20px;flex-wrap:wrap;align-items:center;}
+.item-row:first-child{border-top:none;padding-top:0;}
+.clock-box{flex:none;text-align:center;}
+.clock-box svg{background:#fff;border-radius:50%;}
+.item-body{flex:1;min-width:220px;}
+.item-num{font-family:var(--display);font-weight:700;color:var(--purple-dark);margin-bottom:8px;display:block;}
+.options{display:flex;flex-direction:column;gap:8px;}
+.opt{display:flex;align-items:center;gap:10px;text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:10px 14px;font-family:var(--sans);font-weight:700;font-size:0.92rem;cursor:pointer;transition:.12s;}
+.opt:hover:not(:disabled){border-color:var(--purple);transform:translateY(-1px);}
+.opt.selected{border-color:var(--purple);background:var(--purple-light);}
+.opt.correct{border-color:var(--mint);background:var(--mint-light);}
+.opt.incorrect{border-color:var(--coral);background:var(--coral-light);}
+.opt:disabled{cursor:default;}
+.clock-opts{display:flex;gap:14px;flex-wrap:wrap;}
+.clock-opt{border:3px solid var(--line);background:#fff;border-radius:16px;padding:8px;cursor:pointer;transition:.12s;}
+.clock-opt:hover:not(:disabled){border-color:var(--purple);transform:translateY(-2px);}
+.clock-opt.selected{border-color:var(--purple);background:var(--purple-light);}
+.clock-opt.correct{border-color:var(--mint);background:var(--mint-light);}
+.clock-opt.incorrect{border-color:var(--coral);background:var(--coral-light);}
+.clock-opt:disabled{cursor:default;}
+input.time-input{font-family:var(--sans);font-weight:700;font-size:0.94rem;border:2px solid var(--line);border-radius:12px;padding:8px 12px;width:230px;}
+input.time-input.correct{border-color:var(--mint);background:var(--mint-light);}
+input.time-input.incorrect{border-color:var(--coral);background:var(--coral-light);}
+.time-answer{font-size:0.82rem;color:var(--ink-soft);display:none;margin-left:8px;}
+.time-answer.show{display:inline;}
+select.time-select{font-family:var(--sans);font-weight:700;font-size:0.9rem;border:2px solid var(--line);border-radius:10px;padding:7px 10px;background:#fff;}
+.speak-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-weight:700;font-size:0.88rem;color:#fff;background:var(--sky);border:none;padding:9px 16px;border-radius:999px;cursor:pointer;box-shadow:0 3px 0 #2C9CC9;transition:transform .1s ease;margin-bottom:10px;}
+.speak-btn:hover{transform:translateY(-2px);}
+.speak-btn:active{transform:translateY(1px);box-shadow:0 1px 0 #2C9CC9;}
+.item-check{display:inline-flex;align-items:center;font-family:var(--display);font-weight:700;font-size:0.82rem;color:var(--purple-dark);background:#fff;border:2px solid var(--purple);padding:6px 14px;border-radius:999px;cursor:pointer;margin-top:10px;transition:transform .1s ease,background .1s ease;}
+.item-check:hover{background:var(--purple-light);transform:translateY(-1px);}
+.item-check.item-reset{border-color:var(--mint);color:#0e8f6c;}
+.item-check.item-reset:hover{background:var(--mint-light);}
+.evidence{display:none;margin-top:10px;padding:10px 14px;border-radius:12px;background:#FFF2FA;border:2px solid var(--pink-light);font-size:0.86rem;color:var(--ink-soft);}
+.evidence.show{display:block;}
+.evidence b{color:var(--pink);}
+.part-actions{display:flex;align-items:center;gap:14px;margin-top:18px;flex-wrap:wrap;}
+.btn{font-family:var(--display);font-weight:700;font-size:0.92rem;padding:11px 22px;border-radius:999px;border:none;cursor:pointer;background:var(--pink);color:#fff;box-shadow:0 3px 0 #D94F82;transition:transform .1s ease;}
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:translateY(1px);box-shadow:0 1px 0 #D94F82;}
+.btn.ghost{background:#fff;color:var(--purple-dark);border:2px solid var(--purple);box-shadow:none;}
+.btn.ghost:hover{background:var(--purple-light);}
+.btn:disabled{opacity:0.55;cursor:default;box-shadow:none;transform:none;}
+.score{font-family:var(--display);font-weight:700;font-size:0.95rem;color:var(--ink-soft);}
+.score.good{color:var(--mint);}
+.set-time-preview{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:10px;}
+footer{text-align:center;font-size:0.82rem;font-weight:700;color:var(--ink-soft);padding:26px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">🕐 Clock Detectives <small>British time telling — with real audio!</small></div>
+    <div class="topbar-nav">
+      <a href="../index.html">🏠 Home</a>
+      <a href="pretest1.html">📚 Trainer Pre-Test 1</a>
+    </div>
+  </div>
+</div>
+
+<main>
+  <p class="intro" id="intro-text"></p>
+  <div id="sections"></div>
+</main>
+
+<footer>READY, SET, KET! · Clock Detectives · Alina Iuga</footer>
+
+<script>
+/* ---------- helpers ---------- */
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+function norm(s) {
+  return (s || '').toLowerCase().trim()
+    .replace(/^it'?s\s+/, '').replace(/^it is\s+/, '')
+    .replace(/[.!?]$/, '').replace(/\s+/g, ' ');
+}
+
+/* ---------- clock drawing ---------- */
+function clockSVG(hour, minute, size) {
+  size = size || 150;
+  const cx = size / 2, cy = size / 2, r = size / 2 - 10;
+  const minuteAngle = (minute / 60) * 360;
+  const hourAngle = ((hour % 12) / 12) * 360 + (minute / 60) * 30;
+  const mLen = r * 0.78, hLen = r * 0.5;
+  const mx = cx + mLen * Math.sin(minuteAngle * Math.PI / 180);
+  const my = cy - mLen * Math.cos(minuteAngle * Math.PI / 180);
+  const hx = cx + hLen * Math.sin(hourAngle * Math.PI / 180);
+  const hy = cy - hLen * Math.cos(hourAngle * Math.PI / 180);
+  let ticks = '', nums = '';
+  for (let i = 1; i <= 12; i++) {
+    const a = i * 30 * Math.PI / 180;
+    const tx1 = cx + (r - 2) * Math.sin(a), ty1 = cy - (r - 2) * Math.cos(a);
+    const tx2 = cx + (r - 8) * Math.sin(a), ty2 = cy - (r - 8) * Math.cos(a);
+    ticks += `<line x1="${tx1}" y1="${ty1}" x2="${tx2}" y2="${ty2}" stroke="#8478A3" stroke-width="2"/>`;
+    const nx = cx + (r - 20) * Math.sin(a), ny = cy - (r - 20) * Math.cos(a);
+    nums += `<text x="${nx}" y="${ny + 5}" text-anchor="middle" font-size="${size * 0.09}" font-weight="700" fill="#463B63" font-family="Baloo 2, sans-serif">${i}</text>`;
+  }
+  return `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff" stroke="#8C6FF7" stroke-width="4"/>
+    ${ticks}${nums}
+    <line x1="${cx}" y1="${cy}" x2="${hx}" y2="${hy}" stroke="#463B63" stroke-width="5" stroke-linecap="round"/>
+    <line x1="${cx}" y1="${cy}" x2="${mx}" y2="${my}" stroke="#FF6FA5" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="${cx}" cy="${cy}" r="4.5" fill="#463B63"/>
+  </svg>`;
+}
+
+/* ---------- British time phrase ---------- */
+const HOUR_WORDS = ['twelve', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+const MIN_WORDS = { 5: 'five', 10: 'ten', 15: 'quarter', 20: 'twenty', 25: 'twenty-five' };
+function timePhrase(hour, minute) {
+  const h = hour % 12 === 0 ? 12 : hour % 12;
+  const nextH = h === 12 ? 1 : h + 1;
+  if (minute === 0) return `It's ${HOUR_WORDS[h]} o'clock.`;
+  if (minute === 30) return `It's half past ${HOUR_WORDS[h]}.`;
+  if (minute < 30) return `It's ${MIN_WORDS[minute]} past ${HOUR_WORDS[h]}.`;
+  return `It's ${MIN_WORDS[60 - minute]} to ${HOUR_WORDS[nextH]}.`;
+}
+function speak(text) {
+  if (!window.speechSynthesis) { alert("Sorry, your browser can't play audio for this."); return; }
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-GB'; u.rate = 0.85; u.pitch = 1.05;
+  const voices = window.speechSynthesis.getVoices();
+  const gb = voices.find(v => v.lang === 'en-GB') || voices.find(v => v.lang && v.lang.startsWith('en'));
+  if (gb) u.voice = gb;
+  window.speechSynthesis.speak(u);
+}
+const PHRASE_MINUTES = {
+  "o'clock": 0, 'five past': 5, 'ten past': 10, 'quarter past': 15,
+  'twenty past': 20, 'twenty-five past': 25, 'half past': 30,
+  'twenty-five to': 35, 'twenty to': 40, 'quarter to': 45, 'ten to': 50, 'five to': 55,
+};
+function toClockTime(spokenHour, phraseKey) {
+  const minute = PHRASE_MINUTES[phraseKey];
+  let hour = spokenHour;
+  if (minute > 30) hour = spokenHour - 1 === 0 ? 12 : spokenHour - 1;
+  return { hour: hour, minute: minute };
+}
+
+/* ---------- per-item check/reset toggle ---------- */
+function addItemCheckButton(container, onCheck, onReset) {
+  function renderCheckBtn() {
+    const btn = el('button', 'item-check', 'Check ✔');
+    btn.type = 'button';
+    btn.addEventListener('click', () => { onCheck(); btn.replaceWith(renderResetBtn()); });
+    return btn;
+  }
+  function renderResetBtn() {
+    const btn = el('button', 'item-check item-reset', '🔄 Try again');
+    btn.type = 'button';
+    btn.addEventListener('click', () => { onReset(); btn.replaceWith(renderCheckBtn()); });
+    return btn;
+  }
+  container.appendChild(renderCheckBtn());
+}
+function updatePartScore(partEl) {
+  if (!partEl) return;
+  const items = partEl.querySelectorAll('[data-kind]');
+  const total = items.length;
+  let graded = 0, correct = 0;
+  items.forEach(it => { if (it.dataset.graded === '1') { graded++; if (it.dataset.correct === '1') correct++; } });
+  const scoreEl = partEl.querySelector('.score');
+  if (scoreEl) {
+    if (graded === 0) { scoreEl.textContent = ''; scoreEl.classList.remove('good'); }
+    else {
+      const perfect = graded === total && correct === total;
+      scoreEl.textContent = `${correct} / ${total} correct${perfect ? ' 🎉' : ''}`;
+      scoreEl.classList.toggle('good', perfect);
+    }
+  }
+}
+
+/* ---------- exercise builders ---------- */
+function buildReadClock(part) {
+  const wrap = el('div');
+  part.items.forEach(item => {
+    const row = el('div', 'item-row'); row.dataset.kind = 'read';
+    const cbox = el('div', 'clock-box');
+    cbox.innerHTML = clockSVG(item.hour, item.minute, 130);
+    row.appendChild(cbox);
+    const body = el('div', 'item-body');
+    body.appendChild(el('span', 'item-num', item.num + '.'));
+    const opts = el('div', 'options'); opts.dataset.correct = item.correct;
+    item.options.forEach((text, i) => {
+      const btn = el('button', 'opt', text);
+      btn.type = 'button'; btn.dataset.letter = String(i);
+      btn.addEventListener('click', () => {
+        if (btn.disabled) return;
+        opts.querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+      opts.appendChild(btn);
+    });
+    body.appendChild(opts);
+    addItemCheckButton(body,
+      () => {
+        const selected = opts.querySelector('.opt.selected');
+        opts.querySelectorAll('.opt').forEach(b => {
+          b.disabled = true; b.classList.remove('correct', 'incorrect');
+          if (b.dataset.letter === opts.dataset.correct) b.classList.add('correct');
+          else if (b === selected) b.classList.add('incorrect');
+        });
+        const ok = !!selected && selected.dataset.letter === opts.dataset.correct;
+        row.dataset.graded = '1'; row.dataset.correct = ok ? '1' : '0';
+        updatePartScore(row.closest('.part'));
+      },
+      () => {
+        opts.querySelectorAll('.opt').forEach(b => { b.disabled = false; b.classList.remove('selected', 'correct', 'incorrect'); });
+        delete row.dataset.graded; delete row.dataset.correct;
+        updatePartScore(row.closest('.part'));
+      }
+    );
+    row.appendChild(body);
+    wrap.appendChild(row);
+  });
+  return wrap;
+}
+
+function buildTypeTime(part) {
+  const wrap = el('div');
+  part.items.forEach(item => {
+    const row = el('div', 'item-row'); row.dataset.kind = 'type';
+    const cbox = el('div', 'clock-box');
+    cbox.innerHTML = clockSVG(item.hour, item.minute, 130);
+    row.appendChild(cbox);
+    const body = el('div', 'item-body');
+    body.appendChild(el('span', 'item-num', item.num + '. Write the time:'));
+    const input = document.createElement('input');
+    input.type = 'text'; input.className = 'time-input'; input.placeholder = "It's ...";
+    body.appendChild(input);
+    const ans = el('span', 'time-answer', '(' + item.accepted[0] + ')');
+    body.appendChild(ans);
+    const br = document.createElement('div');
+    body.appendChild(br);
+    addItemCheckButton(body,
+      () => {
+        const ok = item.accepted.map(norm).includes(norm(input.value)) && input.value.trim() !== '';
+        input.classList.toggle('correct', ok); input.classList.toggle('incorrect', !ok);
+        input.disabled = true; ans.classList.add('show');
+        row.dataset.graded = '1'; row.dataset.correct = ok ? '1' : '0';
+        updatePartScore(row.closest('.part'));
+      },
+      () => {
+        input.value = ''; input.disabled = false; input.classList.remove('correct', 'incorrect'); ans.classList.remove('show');
+        delete row.dataset.graded; delete row.dataset.correct;
+        updatePartScore(row.closest('.part'));
+      }
+    );
+    row.appendChild(body);
+    wrap.appendChild(row);
+  });
+  return wrap;
+}
+
+function buildListenChoose(part) {
+  const wrap = el('div');
+  part.items.forEach(item => {
+    const row = el('div', 'item-row'); row.dataset.kind = 'listen';
+    row.style.display = 'block';
+    const head = el('div');
+    head.appendChild(el('span', 'item-num', item.num + '. Listen and click the correct clock:'));
+    const sbtn = el('button', 'speak-btn', '🔊 Listen');
+    sbtn.type = 'button';
+    sbtn.addEventListener('click', () => speak(item.phrase));
+    head.appendChild(document.createElement('br'));
+    head.appendChild(sbtn);
+    row.appendChild(head);
+    const clockOpts = el('div', 'clock-opts'); clockOpts.dataset.correct = item.correct;
+    item.options.forEach((t, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'clock-opt'; btn.dataset.letter = String(i);
+      btn.innerHTML = clockSVG(t.hour, t.minute, 100);
+      btn.addEventListener('click', () => {
+        if (btn.disabled) return;
+        clockOpts.querySelectorAll('.clock-opt').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      });
+      clockOpts.appendChild(btn);
+    });
+    row.appendChild(clockOpts);
+    const actions = el('div');
+    addItemCheckButton(actions,
+      () => {
+        const selected = clockOpts.querySelector('.clock-opt.selected');
+        clockOpts.querySelectorAll('.clock-opt').forEach(b => {
+          b.disabled = true; b.classList.remove('correct', 'incorrect');
+          if (b.dataset.letter === clockOpts.dataset.correct) b.classList.add('correct');
+          else if (b === selected) b.classList.add('incorrect');
+        });
+        const ok = !!selected && selected.dataset.letter === clockOpts.dataset.correct;
+        row.dataset.graded = '1'; row.dataset.correct = ok ? '1' : '0';
+        updatePartScore(row.closest('.part'));
+      },
+      () => {
+        clockOpts.querySelectorAll('.clock-opt').forEach(b => { b.disabled = false; b.classList.remove('selected', 'correct', 'incorrect'); });
+        delete row.dataset.graded; delete row.dataset.correct;
+        updatePartScore(row.closest('.part'));
+      }
+    );
+    row.appendChild(actions);
+    wrap.appendChild(row);
+  });
+  return wrap;
+}
+
+function buildListenSet(part) {
+  const wrap = el('div');
+  part.items.forEach(item => {
+    const row = el('div', 'item-row'); row.dataset.kind = 'set';
+    row.style.display = 'block';
+    row.appendChild(el('span', 'item-num', item.num + '. Listen, then set the clock:'));
+    const sbtn = el('button', 'speak-btn', '🔊 Listen');
+    sbtn.type = 'button'; sbtn.style.display = 'block';
+    sbtn.addEventListener('click', () => speak(item.phrase));
+    row.appendChild(sbtn);
+
+    const preview = el('div', 'set-time-preview');
+    const cbox = el('div', 'clock-box');
+    cbox.innerHTML = clockSVG(12, 0, 110);
+    preview.appendChild(cbox);
+
+    const controls = el('div');
+    const hourSel = document.createElement('select'); hourSel.className = 'time-select';
+    for (let h = 1; h <= 12; h++) { const o = document.createElement('option'); o.value = h; o.textContent = 'Hour: ' + h; hourSel.appendChild(o); }
+    const phraseSel = document.createElement('select'); phraseSel.className = 'time-select';
+    Object.keys(PHRASE_MINUTES).forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; phraseSel.appendChild(o); });
+    controls.appendChild(hourSel); controls.appendChild(document.createElement('br')); controls.appendChild(phraseSel);
+    preview.appendChild(controls);
+    row.appendChild(preview);
+
+    function refreshPreview() {
+      const t = toClockTime(parseInt(hourSel.value, 10), phraseSel.value);
+      cbox.innerHTML = clockSVG(t.hour, t.minute, 110);
+    }
+    hourSel.addEventListener('change', refreshPreview);
+    phraseSel.addEventListener('change', refreshPreview);
+    hourSel.value = '12'; phraseSel.value = "o'clock"; refreshPreview();
+
+    addItemCheckButton(row,
+      () => {
+        const t = toClockTime(parseInt(hourSel.value, 10), phraseSel.value);
+        const ok = t.hour === item.hour && t.minute === item.minute;
+        hourSel.disabled = true; phraseSel.disabled = true;
+        cbox.style.outline = ok ? '4px solid #12B886' : '4px solid #FF6B6B';
+        cbox.style.borderRadius = '50%';
+        row.dataset.graded = '1'; row.dataset.correct = ok ? '1' : '0';
+        updatePartScore(row.closest('.part'));
+      },
+      () => {
+        hourSel.disabled = false; phraseSel.disabled = false;
+        hourSel.value = '12'; phraseSel.value = "o'clock"; refreshPreview();
+        cbox.style.outline = 'none';
+        delete row.dataset.graded; delete row.dataset.correct;
+        updatePartScore(row.closest('.part'));
+      }
+    );
+    wrap.appendChild(row);
+  });
+  return wrap;
+}
+
+const BUILDERS = { 'read': buildReadClock, 'type': buildTypeTime, 'listen': buildListenChoose, 'set': buildListenSet };
+
+function buildPart(part) {
+  const section = el('section', 'part'); section.id = part.id;
+  const head = el('div', 'part-head');
+  head.appendChild(el('span', 'badge', part.number));
+  head.appendChild(el('h3', null, part.title));
+  section.appendChild(head);
+  const body = el('div');
+  if (part.instructions) body.appendChild(el('p', 'instructions', part.instructions));
+  if (part.tip) { const tip = el('div', 'tip'); tip.innerHTML = `<b>⭐ Tip:</b> <span>${part.tip}</span>`; body.appendChild(tip); }
+  body.appendChild(BUILDERS[part.type](part));
+
+  const actions = el('div', 'part-actions');
+  const checkBtn = el('button', 'btn', '✅ Check my answers');
+  checkBtn.type = 'button';
+  const resetBtn = el('button', 'btn ghost', '🔄 Try again');
+  resetBtn.type = 'button'; resetBtn.style.display = 'none';
+  checkBtn.addEventListener('click', () => {
+    section.querySelectorAll('.item-check:not(.item-reset)').forEach(b => b.click());
+    checkBtn.disabled = true; checkBtn.textContent = '✔️ Checked';
+    resetBtn.style.display = 'inline-block';
+  });
+  resetBtn.addEventListener('click', () => {
+    const fresh = buildPart(part);
+    section.replaceWith(fresh);
+  });
+  actions.appendChild(checkBtn); actions.appendChild(resetBtn); actions.appendChild(el('span', 'score', ''));
+  body.appendChild(actions);
+  section.appendChild(body);
+  return section;
+}
+
+function buildReference(sec) {
+  const wrap = el('div', 'part');
+  wrap.id = sec.id;
+  const head = el('div', 'part-head');
+  head.appendChild(el('span', 'badge', '📚'));
+  head.appendChild(el('h3', null, sec.title));
+  wrap.appendChild(head);
+
+  const table = document.createElement('table'); table.className = 'rules-table';
+  table.innerHTML = `<tr><th>Minutes</th><th>How the British say it</th><th>Example</th></tr>` +
+    sec.rules.map(r => `<tr><td>${r.min}</td><td><b>${r.say}</b></td><td>${r.example}</td></tr>`).join('');
+  wrap.appendChild(table);
+
+  const diaWrap = el('div', 'clock-diagram-wrap');
+  diaWrap.innerHTML = clockSVG(3, 0, 240);
+  wrap.appendChild(diaWrap);
+
+  const warn = el('div', 'warn-box');
+  warn.innerHTML = `<b>⚠️ Careful!</b> ${sec.warning}`;
+  wrap.appendChild(warn);
+  return wrap;
+}
+
+/* ==================== DATA ==================== */
+const TIME_DATA = {
+  intro: "Learn to tell the time the British way, then test yourself — some activities even talk to you! Click 🔊 Listen and choose or set the clock you hear.",
+  reference: {
+    id: 'ref', title: 'How the British Tell the Time',
+    rules: [
+      { min: ':00', say: "It's ... o'clock.", example: "3:00 → It's three o'clock." },
+      { min: ':05', say: "It's five past ...", example: "3:05 → It's five past three." },
+      { min: ':10', say: "It's ten past ...", example: "3:10 → It's ten past three." },
+      { min: ':15', say: "It's quarter past ...", example: "3:15 → It's quarter past three." },
+      { min: ':20', say: "It's twenty past ...", example: "3:20 → It's twenty past three." },
+      { min: ':25', say: "It's twenty-five past ...", example: "3:25 → It's twenty-five past three." },
+      { min: ':30', say: "It's half past ...", example: "3:30 → It's half past three." },
+      { min: ':35', say: "It's twenty-five to ...", example: "3:35 → It's twenty-five to four." },
+      { min: ':40', say: "It's twenty to ...", example: "3:40 → It's twenty to four." },
+      { min: ':45', say: "It's quarter to ...", example: "3:45 → It's quarter to four." },
+      { min: ':50', say: "It's ten to ...", example: "3:50 → It's ten to four." },
+      { min: ':55', say: "It's five to ...", example: "3:55 → It's five to four." },
+    ],
+    warning: `After the clock passes half past (:30), the British count down to the <u>NEXT</u> hour, not the hour you can see on the clock! 6:40 is NOT "twenty to six" — it's <b>"twenty to seven"</b>. And remember: British people say <b>"half past six"</b>, never "six thirty", when speaking!`,
+  },
+  sections: [
+    {
+      id: 'clock1', label: 'Activity 1 — Read the Clock', navLabel: 'Ex.1 Read',
+      description: 'Look at the clock and choose the correct time.',
+      parts: [
+        {
+          id: 'ex1', number: '1', title: 'Choose the correct time', type: 'read',
+          instructions: 'Look at each clock and choose A, B or C.',
+          items: [
+            { num: 1, hour: 3, minute: 0, correct: '1', options: ["It's three thirty.", "It's three o'clock.", "It's two o'clock."] },
+            { num: 2, hour: 7, minute: 15, correct: '2', options: ["It's seven to two.", "It's five past seven.", "It's quarter past seven."] },
+            { num: 3, hour: 10, minute: 30, correct: '0', options: ["It's half past ten.", "It's half past eleven.", "It's quarter past ten."] },
+            { num: 4, hour: 2, minute: 45, correct: '1', options: ["It's quarter past two.", "It's quarter to three.", "It's quarter to two."] },
+            { num: 5, hour: 5, minute: 20, correct: '2', options: ["It's twenty to five.", "It's ten past five.", "It's twenty past five."] },
+            { num: 6, hour: 9, minute: 50, correct: '0', options: ["It's ten to ten.", "It's ten past nine.", "It's ten to nine."] },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'clock2', label: 'Activity 2 — Write the Time', navLabel: 'Ex.2 Write',
+      description: 'Look at the clock and write the time in words.',
+      parts: [
+        {
+          id: 'ex2', number: '2', title: 'Type the time in words', type: 'type',
+          instructions: "Write the time under each clock (e.g. quarter past three).",
+          tip: "You don't need to write \"It's\" — just the time phrase is fine!",
+          items: [
+            { num: 1, hour: 1, minute: 5, accepted: ['five past one'] },
+            { num: 2, hour: 4, minute: 10, accepted: ['ten past four'] },
+            { num: 3, hour: 6, minute: 25, accepted: ['twenty-five past six', 'twenty five past six'] },
+            { num: 4, hour: 8, minute: 35, accepted: ['twenty-five to nine', 'twenty five to nine'] },
+            { num: 5, hour: 11, minute: 40, accepted: ['twenty to twelve'] },
+            { num: 6, hour: 12, minute: 55, accepted: ['five to one'] },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'clock3', label: 'Activity 3 — Listen and Choose', navLabel: 'Ex.3 Listen & choose',
+      description: 'Press 🔊 Listen, then click on the clock that shows the time you heard.',
+      parts: [
+        {
+          id: 'ex3', number: '3', title: 'Listen and pick the correct clock', type: 'listen',
+          instructions: 'Click 🔊 Listen, then choose the matching clock.',
+          tip: 'You can press Listen as many times as you like before answering.',
+          items: [
+            { num: 1, phrase: timePhrase(3, 0), correct: '0', options: [{ hour: 3, minute: 0 }, { hour: 3, minute: 30 }, { hour: 2, minute: 0 }, { hour: 9, minute: 0 }] },
+            { num: 2, phrase: timePhrase(6, 15), correct: '2', options: [{ hour: 6, minute: 45 }, { hour: 7, minute: 15 }, { hour: 6, minute: 15 }, { hour: 6, minute: 5 }] },
+            { num: 3, phrase: timePhrase(9, 30), correct: '1', options: [{ hour: 9, minute: 15 }, { hour: 9, minute: 30 }, { hour: 10, minute: 30 }, { hour: 3, minute: 30 }] },
+            { num: 4, phrase: timePhrase(1, 45), correct: '3', options: [{ hour: 1, minute: 15 }, { hour: 2, minute: 15 }, { hour: 1, minute: 0 }, { hour: 1, minute: 45 }] },
+            { num: 5, phrase: timePhrase(4, 5), correct: '0', options: [{ hour: 4, minute: 5 }, { hour: 4, minute: 55 }, { hour: 5, minute: 5 }, { hour: 4, minute: 25 }] },
+            { num: 6, phrase: timePhrase(11, 50), correct: '2', options: [{ hour: 11, minute: 10 }, { hour: 12, minute: 50 }, { hour: 11, minute: 50 }, { hour: 10, minute: 50 }] },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'clock4', label: 'Activity 4 — Listen and Set the Clock', navLabel: 'Ex.4 Listen & set',
+      description: 'Press 🔊 Listen, then use the dropdowns to set the clock to match — watch it move live!',
+      parts: [
+        {
+          id: 'ex4', number: '4', title: 'Listen and set the clock hands', type: 'set',
+          instructions: 'Choose the hour and the time phrase to set the clock. It updates as you choose!',
+          tip: 'Remember: for "to" times, choose the NEXT hour — e.g. 6:45 is "quarter to seven", so pick Hour: 7.',
+          items: [
+            { num: 1, phrase: timePhrase(2, 0), hour: 2, minute: 0 },
+            { num: 2, phrase: timePhrase(5, 15), hour: 5, minute: 15 },
+            { num: 3, phrase: timePhrase(8, 30), hour: 8, minute: 30 },
+            { num: 4, phrase: timePhrase(6, 45), hour: 6, minute: 45 },
+            { num: 5, phrase: timePhrase(3, 40), hour: 3, minute: 40 },
+            { num: 6, phrase: timePhrase(10, 10), hour: 10, minute: 10 },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'clock5', label: '🏁 Final Challenge — Beat the Clock!', navLabel: 'Final challenge',
+      description: 'A mixed round to test everything you\'ve learnt. Good luck, detective!',
+      parts: [
+        {
+          id: 'ex5', number: '🏁', title: 'Listen and pick the correct clock', type: 'listen',
+          instructions: 'Listen carefully — this round mixes easy and tricky times!',
+          items: [
+            { num: 1, phrase: timePhrase(12, 0), correct: '1', options: [{ hour: 6, minute: 0 }, { hour: 12, minute: 0 }, { hour: 12, minute: 30 }, { hour: 11, minute: 0 }] },
+            { num: 2, phrase: timePhrase(7, 25), correct: '0', options: [{ hour: 7, minute: 25 }, { hour: 7, minute: 35 }, { hour: 8, minute: 25 }, { hour: 5, minute: 25 }] },
+            { num: 3, phrase: timePhrase(2, 35), correct: '3', options: [{ hour: 2, minute: 25 }, { hour: 3, minute: 35 }, { hour: 2, minute: 45 }, { hour: 2, minute: 35 }] },
+            { num: 4, phrase: timePhrase(9, 55), correct: '2', options: [{ hour: 9, minute: 5 }, { hour: 10, minute: 5 }, { hour: 9, minute: 55 }, { hour: 8, minute: 55 }] },
+            { num: 5, phrase: timePhrase(4, 30), correct: '1', options: [{ hour: 4, minute: 0 }, { hour: 4, minute: 30 }, { hour: 5, minute: 30 }, { hour: 10, minute: 30 }] },
+            { num: 6, phrase: timePhrase(1, 20), correct: '0', options: [{ hour: 1, minute: 20 }, { hour: 1, minute: 40 }, { hour: 2, minute: 20 }, { hour: 4, minute: 20 }] },
+            { num: 7, phrase: timePhrase(8, 45), correct: '1', options: [{ hour: 8, minute: 15 }, { hour: 8, minute: 45 }, { hour: 9, minute: 15 }, { hour: 9, minute: 45 }] },
+            { num: 8, phrase: timePhrase(11, 10), correct: '2', options: [{ hour: 11, minute: 50 }, { hour: 12, minute: 10 }, { hour: 11, minute: 10 }, { hour: 10, minute: 10 }] },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+/* fix a small duplicate-option glitch in item 7 of final challenge (was a copy/paste guard) */
+TIME_DATA.sections[4].parts[0].items[6].options = [{ hour: 8, minute: 15 }, { hour: 8, minute: 45 }, { hour: 9, minute: 15 }, { hour: 9, minute: 45 }];
+
+/* ==================== RENDER ==================== */
+function render() {
+  document.getElementById('intro-text').textContent = TIME_DATA.intro;
+  const main = document.getElementById('sections');
+  main.appendChild(buildReference(TIME_DATA.reference));
+
+  TIME_DATA.sections.forEach(sec => {
+    const head = el('div', 'section-head');
+    head.appendChild(el('h2', null, sec.label));
+    if (sec.description) head.appendChild(el('p', null, sec.description));
+    main.appendChild(head);
+    sec.parts.forEach(part => main.appendChild(buildPart(part)));
+  });
+}
+if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => {};
+render();
+</script>
+</body>
+</html>
