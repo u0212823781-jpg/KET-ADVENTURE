@@ -496,7 +496,7 @@ const PRETEST1 = {
           id: 'w7-4', number: '4', title: 'Activity 4 — Make the sentence better', navLabel: 'Act.4 Improve',
           type: 'writing-multi',
           instructions: 'Add a useful detail or connector from the mini bank: suddenly • with her friend • near the... • because... • very excited • after that • finally',
-          image: '../IMAGENES/trainer-extra/part7-picnic-story.jpg',
+          image: '../IMAGENES/part7-picnic-story.jpg',
           items: [
             { stem: '1. The girl went to the park. →', model: 'Last Saturday, the girl went to the park with her friend.' },
             { stem: '2. She saw a dog. →', model: 'Suddenly, she saw a dog near a tree.' },
@@ -507,7 +507,7 @@ const PRETEST1 = {
           id: 'w7-5', number: '5', title: 'Activity 5 — Three-step story', navLabel: 'Act.5 Three-step',
           type: 'writing-multi',
           instructions: 'Complete the beginning, problem and ending of Lucy\'s story.',
-          image: '../IMAGENES/trainer-extra/part7-beach-story.jpg',
+          image: '../IMAGENES/part7-beach-story.jpg',
           items: [
             { stem: 'Beginning: Last Sunday, Lucy ___', model: 'Last Sunday, Lucy went to the beach with her family.' },
             { stem: 'Problem: Suddenly, ___', model: 'Suddenly, the wind blew her hat away.' },
@@ -519,7 +519,7 @@ const PRETEST1 = {
           type: 'writing',
           instructions: 'Look at the three pictures. Write the story shown in the pictures.',
           tip: 'Remember: use the past tense, follow the pictures in order and connect your ideas with words such as suddenly, then and finally. Useful phrases: in the park • on the path • look around • give something back • thank someone. Write 35 words or more.',
-          image: '../IMAGENES/trainer-extra/part7-bike-story.jpg',
+          image: '../IMAGENES/part7-bike-story.jpg',
           minWords: 35,
           model: "Last Saturday, a boy was riding his bike in the park. Suddenly, he saw a small bag on the path, so he stopped and picked it up. Then he looked around and saw an elderly woman. He gave the bag back to her. She was very happy and thanked him.",
         },
@@ -531,7 +531,7 @@ const PRETEST1 = {
       id: 'listening123',
       label: 'Listening Trainer — Test 1 · Parts 1, 2 & 3',
       description: 'No audios yet! First, practise the vocabulary, strategies and tips you need for KET Listening.',
-      poster: '../IMAGENES/trainer-extra/listening123-vocab-poster.jpg',
+      poster: '../IMAGENES/listening123-vocab-poster.jpg',
       crossLinks: [
         { label: 'Practise Test 1 — Listening Part 1', href: 'test1.html#l1' },
         { label: 'Practise Test 1 — Listening Part 2', href: 'test1.html#l2' },
@@ -590,7 +590,7 @@ const PRETEST1 = {
           id: 'l123-5', number: '5', title: 'Activity 5 — Number & Time Training', navLabel: 'Ex.5 Numbers & time',
           type: 'gap',
           instructions: 'Write the numbers in digits. (Example: two pounds fifty = £2.50)',
-          image: '../IMAGENES/trainer-extra/listening123-time-money.jpg',
+          image: '../IMAGENES/listening123-time-money.jpg',
           items: [
             { stem: 'four pounds fifty = £', accepted: ['4.50', '£4.50'] },
             { stem: 'three pounds seventy-five = £', accepted: ['3.75', '£3.75'] },
@@ -664,7 +664,7 @@ Leo: Same for me. We did lots of music and homework activities, but very little 
       id: 'listening45',
       label: 'Listening Trainer — Test 1 · Parts 4 & 5',
       description: 'No audios yet! First, practise the vocabulary, strategies and tips you need for KET Listening.',
-      poster: '../IMAGENES/trainer-extra/listening45-vocab-poster.jpg',
+      poster: '../IMAGENES/listening45-vocab-poster.jpg',
       crossLinks: [
         { label: 'Practise Test 1 — Listening Part 4', href: 'test1.html#l4' },
         { label: 'Practise Test 1 — Listening Part 5', href: 'test1.html#l5' },
