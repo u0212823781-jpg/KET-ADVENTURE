@@ -10,8 +10,9 @@
   .hero{background:linear-gradient(120deg,var(--purple),var(--pink));color:#fff;text-align:center;padding:50px 20px 60px;}
   .hero h1{font-size:2.1rem;margin:0 0 6px;}
   .hero p{margin:0;font-weight:600;opacity:0.95;}
-  .cards{max-width:960px;margin:-32px auto 60px;padding:0 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;flex:1;}
-  @media (max-width:760px){.cards{grid-template-columns:1fr;}}
+  .cards{max-width:960px;margin:-32px auto 60px;padding:0 20px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;flex:1;}
+  @media (max-width:900px){.cards{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:520px){.cards{grid-template-columns:1fr;}}
   .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px 20px;text-align:center;box-shadow:0 8px 20px rgba(90,70,160,0.10);text-decoration:none;color:var(--ink);transition:.15s;display:flex;flex-direction:column;gap:8px;}
   .card:hover{transform:translateY(-4px);box-shadow:0 12px 26px rgba(90,70,160,0.16);}
   .card .icon{font-size:2.4rem;}
@@ -21,6 +22,7 @@
   .card.pretest{border-top:5px solid var(--yellow);}
   .card.t1{border-top:5px solid var(--mint);}
   .card.t2{border-top:5px solid var(--pink);}
+  .card.t3{border-top:5px solid var(--purple);}
 </style>
 </head>
 <body>
@@ -46,6 +48,12 @@
   <a class="card t2" href="PAGINAS/test2.html">
     <div class="icon">📝</div>
     <h2>Test 2</h2>
+    <p>Full KET practice test: Reading &amp; Writing and Listening.</p>
+    <span class="go">Start →</span>
+  </a>
+  <a class="card t3" href="PAGINAS/test3.html">
+    <div class="icon">📝</div>
+    <h2>Test 3</h2>
     <p>Full KET practice test: Reading &amp; Writing and Listening.</p>
     <span class="go">Start →</span>
   </a>
