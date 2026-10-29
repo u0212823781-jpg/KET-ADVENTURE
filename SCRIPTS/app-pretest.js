@@ -559,3 +559,174 @@ function renderTrainer(data) {
     }
   });
 }
+
+
+/* ============================================================
+   TEACHER MODE — answers shown automatically, big and clear
+   (to switch it off, delete everything from here down)
+   ============================================================ */
+
+const _originalRenderTrainer = renderTrainer;
+renderTrainer = function (data) {
+  _originalRenderTrainer(data);
+  applyTeacherMode();
+};
+
+function tmEl(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+
+function tmAccepted(json) {
+  const list = JSON.parse(json || '[]');
+  const seen = new Set();
+  const out = [];
+  list.forEach(a => {
+    const k = String(a).toLowerCase().trim();
+    if (!seen.has(k)) { seen.add(k); out.push(a); }
+  });
+  return out;
+}
+
+function tmChip(mainText, alsoList, inline) {
+  const chip = tmEl('span', 't-answer' + (inline ? ' t-inline' : ''));
+  const inner = tmEl('span', 't-ans-text');
+  inner.appendChild(tmEl('span', 't-tick', '✓'));
+  inner.appendChild(tmEl('span', null, mainText));
+  if (alsoList && alsoList.length) {
+    inner.appendChild(tmEl('span', 't-also', 'also: ' + alsoList.join(' / ')));
+  }
+  chip.appendChild(inner);
+  chip.addEventListener('click', () => {
+    if (!document.body.classList.contains('answers-hidden')) return;
+    const unit = chip.classList.contains('t-unit') ? chip : chip.closest('.t-unit');
+    if (unit) unit.classList.add('revealed');
+  });
+  return chip;
+}
+
+function tmMakeModelUnit(unit, model) {
+  if (!unit || !model) return;
+  model.classList.add('show');
+  unit.classList.add('t-unit');
+  const reveal = tmEl('button', 'btn ghost t-reveal', '👁️ Show model answer');
+  reveal.type = 'button';
+  reveal.addEventListener('click', () => unit.classList.add('revealed'));
+  model.insertAdjacentElement('beforebegin', reveal);
+}
+
+function tmSetup() {
+  document.body.classList.add('teacher-mode');
+
+  if (!document.querySelector('link[data-teacher-css]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '../ESTILOS/teacher-mode.css';
+    link.dataset.teacherCss = '1';
+    document.head.appendChild(link);
+  }
+
+  const intro = document.getElementById('intro-text');
+  if (intro) {
+    intro.textContent = '👩‍🏫 Teacher mode: all answers are shown automatically. Press "Hide answers" to let the class think first, then tap each answer to reveal it.';
+  }
+
+  const steps = [100, 112, 125, 140, 160];
+  let idx = 1;
+  try {
+    const s = parseInt(localStorage.getItem('ketTeacherFont'), 10);
+    if (s >= 0 && s < steps.length) idx = s;
+  } catch (e) {}
+  const applyFont = () => {
+    document.documentElement.style.fontSize = steps[idx] + '%';
+    try { localStorage.setItem('ketTeacherFont', String(idx)); } catch (e) {}
+  };
+  applyFont();
+
+  const bar = tmEl('div', 't-toolbar');
+  const eye = tmEl('button', 't-eye', '🙈 Hide answers');
+  eye.type = 'button';
+  eye.addEventListener('click', () => {
+    const hidden = document.body.classList.toggle('answers-hidden');
+    document.querySelectorAll('.t-unit.revealed').forEach(u => u.classList.remove('revealed'));
+    eye.textContent = hidden ? '👁️ Show all' : '🙈 Hide answers';
+  });
+  const minus = tmEl('button', null, 'A−');
+  minus.type = 'button';
+  minus.title = 'Smaller text';
+  minus.addEventListener('click', () => { if (idx > 0) { idx--; applyFont(); } });
+  const plus = tmEl('button', null, 'A+');
+  plus.type = 'button';
+  plus.title = 'Bigger text';
+  plus.addEventListener('click', () => { if (idx < steps.length - 1) { idx++; applyFont(); } });
+  bar.append(eye, minus, plus);
+  document.body.appendChild(bar);
+}
+
+function applyTeacherMode() {
+  tmSetup();
+
+  // No more Check / Try again buttons
+  document.querySelectorAll('.item-check, .part-actions, .inline-check-holder').forEach(b => b.remove());
+
+  // Match exercises (dropdowns)
+  document.querySelectorAll('.match-row').forEach(row => {
+    const sel = row.querySelector('select');
+    if (!sel) return;
+    const opt = Array.from(sel.options).find(o => o.value === sel.dataset.correct);
+    row.classList.add('t-unit');
+    sel.replaceWith(tmChip(opt ? opt.textContent : sel.dataset.correct));
+  });
+
+  // Choose the correct word (A/B/C)
+  document.querySelectorAll('.mc-item').forEach(box => {
+    const opts = box.querySelector('.options');
+    if (!opts) return;
+    const letter = opts.dataset.correct;
+    let text = '';
+    opts.querySelectorAll('.opt').forEach(b => {
+      b.disabled = true;
+      b.classList.remove('selected', 'incorrect');
+      if (b.dataset.letter === letter) { b.classList.add('correct'); text = b.textContent; }
+    });
+    box.classList.add('t-unit');
+    opts.insertAdjacentElement('afterend', tmChip(text));
+  });
+
+  // Write-the-word gaps
+  document.querySelectorAll('.gap-item').forEach(row => {
+    const input = row.querySelector('input.gap-input');
+    if (!input) return;
+    const acc = tmAccepted(input.dataset.accepted);
+    const old = row.querySelector('.gap-answer');
+    if (old) old.remove();
+    row.classList.add('t-unit');
+    input.replaceWith(tmChip(acc[0] || '', acc.slice(1)));
+  });
+
+  // Gaps inside a text (emails, stories)
+  document.querySelectorAll('.cloze-text input.gap-input').forEach(input => {
+    const acc = tmAccepted(input.dataset.accepted);
+    const chip = tmChip(acc[0] || '', acc.slice(1), true);
+    chip.classList.add('t-unit');
+    input.replaceWith(chip);
+  });
+
+  // Writing tasks: model answer shown directly
+  document.querySelectorAll('.writing-box').forEach(box => {
+    const ta = box.querySelector('textarea');
+    if (ta) ta.remove();
+    const meta = box.querySelector('.writing-meta');
+    if (meta) meta.remove();
+    tmMakeModelUnit(box, box.querySelector('.model-answer'));
+  });
+  document.querySelectorAll('.wm-item').forEach(item => {
+    const input = item.querySelector('input.gap-input');
+    if (input) input.remove();
+    const btns = item.querySelector('.wm-btn-row');
+    if (btns) btns.remove();
+    tmMakeModelUnit(item, item.querySelector('.model-answer'));
+  });
+}
